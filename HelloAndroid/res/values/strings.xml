@@ -2,7 +2,6 @@
 
     <string name="app_name">HelloAndroid</string>
     <string name="hello_lauren">Hello, Lauren!</string>
-    <string name="menu_settings">Settings</string>
     <string name="title_activity_hello_android">HelloAndroid</string>
 
 </resources>
