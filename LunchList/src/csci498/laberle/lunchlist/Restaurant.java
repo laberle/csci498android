@@ -4,7 +4,7 @@ public class Restaurant {
 
 	private String address = "";
 	private String name = "";
-	private String type = "";
+	private RestaurantType type = null;
 
 	public String getAddress() {
 		return address;
@@ -18,11 +18,13 @@ public class Restaurant {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getType() {
+	public RestaurantType getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(RestaurantType type) {
 		this.type = type;
 	}
 	
 }
+
+
