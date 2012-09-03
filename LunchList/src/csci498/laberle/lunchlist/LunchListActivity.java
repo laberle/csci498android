@@ -10,9 +10,9 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 
 public class LunchListActivity extends Activity {
 
@@ -30,12 +30,21 @@ public class LunchListActivity extends Activity {
 	}
 
 	private void configureRestaurantList() {
-		ListView list = (ListView) findViewById(R.id.restaurants);
+		Spinner spinner = (Spinner) findViewById(R.id.spinner);
+		adapter = new ArrayAdapter<Restaurant>(
+				this, 
+				android.R.layout.simple_spinner_item, 
+				restaurants);
+		adapter.setDropDownViewResource(
+				android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(adapter);
+
+		/*ListView list = (ListView) findViewById(R.id.restaurants);
 		adapter = new ArrayAdapter<Restaurant>
 				(this, 
 				android.R.layout.simple_list_item_1, 
 				restaurants);
-		list.setAdapter(adapter);
+		list.setAdapter(adapter);*/
 	}
 
 	private void addRadioButtons() {
@@ -65,7 +74,7 @@ public class LunchListActivity extends Activity {
 	private View.OnClickListener onSave = new OnClickListener() {
 		public void onClick(View v) {
 			Restaurant restaurant = new Restaurant();
-			
+
 			EditText name = (EditText) findViewById(R.id.name);
 			EditText address = (EditText) findViewById(R.id.addr);
 			RadioGroup types = (RadioGroup) findViewById(R.id.types);
@@ -73,7 +82,7 @@ public class LunchListActivity extends Activity {
 			restaurant.setName(name.getText().toString());
 			restaurant.setAddress(address.getText().toString());
 			restaurant.setType(getTypeFromRadioButtons(types));
-			
+
 			adapter.add(restaurant);
 		}
 	};

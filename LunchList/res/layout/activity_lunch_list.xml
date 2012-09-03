@@ -38,7 +38,7 @@
         <TableRow>
 
             <TextView android:text="@string/type" />
-            
+
             <RadioGroup android:id="@+id/types" >
 
                 <RadioButton
@@ -63,11 +63,23 @@
             android:text="@string/save" />
     </TableLayout>
 
-    <ListView
+    <!-- Removing for extra credit
+	  <ListView
         android:id="@+id/restaurants"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/details"
         android:layout_alignParentTop="true" />
+    -->
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/details"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="57dp"
+        android:layout_marginTop="57dp" />
 
 </RelativeLayout>
