@@ -1,5 +1,8 @@
 package csci498.laberle.lunchlist;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
@@ -11,7 +14,7 @@ import android.widget.RadioGroup;
 
 public class LunchListActivity extends Activity {
 
-	Restaurant restaurant = new Restaurant();
+	List<Restaurant> model = new ArrayList<Restaurant>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,8 @@ public class LunchListActivity extends Activity {
 
 	private View.OnClickListener onSave = new OnClickListener() {
 		public void onClick(View v) {
+			Restaurant restaurant = new Restaurant();
+			
 			EditText name = (EditText) findViewById(R.id.name);
 			EditText address = (EditText) findViewById(R.id.addr);
 			RadioGroup types = (RadioGroup) findViewById(R.id.types);

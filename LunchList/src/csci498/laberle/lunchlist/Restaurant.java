@@ -6,6 +6,10 @@ public class Restaurant {
 	private String name = "";
 	private RestaurantType type = null;
 
+	public String toString() {
+		return name;
+	}
+	
 	public String getAddress() {
 		return address;
 	}
