@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -17,7 +18,8 @@ import android.widget.Spinner;
 public class LunchListActivity extends Activity {
 
 	List<Restaurant> restaurants = new ArrayList<Restaurant>();
-	ArrayAdapter<Restaurant> adapter = null;
+	ArrayAdapter<Restaurant> restaurantAdapter = null;
+	ArrayAdapter<String> addressAdapter = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -26,18 +28,35 @@ public class LunchListActivity extends Activity {
 
 		configureButton();
 		configureRestaurantList();
+		configureAddressField();
 		//addRadioButtons();
+	}
+
+	private void configureAddressField() {
+		List<String> addresses = new ArrayList<String>();
+		for (Restaurant r : restaurants) {
+			addresses.add(r.getAddress());
+		}
+		
+		addressAdapter = new ArrayAdapter<String>(
+				this,
+				android.R.layout.simple_dropdown_item_1line,
+				addresses);
+		
+		AutoCompleteTextView address = (AutoCompleteTextView)
+		findViewById(R.id.addr);
+		address.setAdapter(addressAdapter);
 	}
 
 	private void configureRestaurantList() {
 		Spinner spinner = (Spinner) findViewById(R.id.spinner);
-		adapter = new ArrayAdapter<Restaurant>(
+		restaurantAdapter = new ArrayAdapter<Restaurant>(
 				this, 
 				android.R.layout.simple_spinner_item, 
 				restaurants);
-		adapter.setDropDownViewResource(
+		restaurantAdapter.setDropDownViewResource(
 				android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(adapter);
+		spinner.setAdapter(restaurantAdapter);
 
 		/*ListView list = (ListView) findViewById(R.id.restaurants);
 		adapter = new ArrayAdapter<Restaurant>
@@ -83,7 +102,8 @@ public class LunchListActivity extends Activity {
 			restaurant.setAddress(address.getText().toString());
 			restaurant.setType(getTypeFromRadioButtons(types));
 
-			adapter.add(restaurant);
+			restaurantAdapter.add(restaurant);
+			addressAdapter.add(restaurant.getAddress());
 		}
 	};
 
