@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 public class LunchListActivity extends Activity {
@@ -18,6 +19,26 @@ public class LunchListActivity extends Activity {
 		setContentView(R.layout.activity_lunch_list);
 
 		configureButton();
+		addRadioButtons();
+	}
+
+	private void addRadioButtons() {
+		RadioGroup types = (RadioGroup) findViewById(R.id.types);
+		RadioButton button = new RadioButton(this);
+		button.setText("Drive-Thru");
+		types.addView(button);
+		button = new RadioButton(this);
+		button.setText("Fancy Dining");
+		types.addView(button);
+		button = new RadioButton(this);
+		button.setText("Self-Serve");
+		types.addView(button);
+		button = new RadioButton(this);
+		button.setText("Drive In");
+		types.addView(button);
+		button = new RadioButton(this);
+		button.setText("Take and Bake");
+		types.addView(button);
 	}
 
 	private void configureButton() {
@@ -36,7 +57,7 @@ public class LunchListActivity extends Activity {
 			restaurant.setType(getTypeFromRadioButtons(types));
 		}
 	};
-	
+
 	private RestaurantType getTypeFromRadioButtons(RadioGroup types) {
 		switch (types.getCheckedRadioButtonId()) {
 		case R.id.sit_down:
