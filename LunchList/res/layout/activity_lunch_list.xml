@@ -63,15 +63,14 @@
             android:text="@string/save" />
     </TableLayout>
 
-    <!-- Removing for extra credit
-	  <ListView
+    <ListView
         android:id="@+id/restaurants"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/details"
         android:layout_alignParentTop="true" />
-    -->
-    
+
+    <!-- Removing from extra credit
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="match_parent"
@@ -80,5 +79,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_margin="10dp" />
+    -->
 
 </RelativeLayout>
