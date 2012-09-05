@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -167,10 +168,16 @@ public class LunchListActivity extends Activity {
 			switch (r.getType()) {
 			case SIT_DOWN:
 				icon.setImageResource(R.drawable.sit_down);
+				name.setTextColor(Color.RED);
+				break;
 			case TAKE_OUT:
 				icon.setImageResource(R.drawable.take_out);
+				name.setTextColor(Color.YELLOW);
+				break;
 			case DELIVERY:
 				icon.setImageResource(R.drawable.delivery);
+				name.setTextColor(Color.GREEN);
+				break;
 			}
 		}
 
