@@ -54,37 +54,9 @@ public class LunchListActivity extends Activity {
 	}
 
 	private void configureRestaurantList() {
-		/*Spinner spinner = (Spinner) findViewById(R.id.spinner);
-		restaurantAdapter = new ArrayAdapter<Restaurant>(
-				this, 
-				android.R.layout.simple_spinner_item, 
-				restaurants);
-		restaurantAdapter.setDropDownViewResource(
-				android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(restaurantAdapter);*/
-
 		ListView list = (ListView) findViewById(R.id.restaurants);
 		adapter = new RestaurantAdapter();
 		list.setAdapter(adapter);
-	}
-
-	private void addRadioButtons() {
-		RadioGroup types = (RadioGroup) findViewById(R.id.types);
-		RadioButton button = new RadioButton(this);
-		button.setText("Drive-Thru");
-		types.addView(button);
-		button = new RadioButton(this);
-		button.setText("Fancy Dining");
-		types.addView(button);
-		button = new RadioButton(this);
-		button.setText("Self-Serve");
-		types.addView(button);
-		button = new RadioButton(this);
-		button.setText("Drive In");
-		types.addView(button);
-		button = new RadioButton(this);
-		button.setText("Take and Bake");
-		types.addView(button);
 	}
 
 	private void configureButton() {
@@ -183,31 +155,15 @@ public class LunchListActivity extends Activity {
 	static class RestaurantHolder {
 		private TextView name = null; 
 		private TextView address = null;
-		private ImageView icon = null;
 
 		RestaurantHolder(View row) {
 			name = (TextView)row.findViewById(R.id.title);
 			address = (TextView)row.findViewById(R.id.address);
-			icon = (ImageView)row.findViewById(R.id.icon);
 		}
 
 		void populateFrom(Restaurant r) {
 			name.setText(r.getName());
 			address.setText(r.getAddress());
-			/*switch (r.getType()) {
-			case SIT_DOWN:
-				icon.setImageResource(R.drawable.sit_down);
-				name.setTextColor(Color.RED);
-				break;
-			case TAKE_OUT:
-				icon.setImageResource(R.drawable.take_out);
-				name.setTextColor(Color.YELLOW);
-				break;
-			case DELIVERY:
-				icon.setImageResource(R.drawable.delivery);
-				name.setTextColor(Color.GREEN);
-				break;
-			}*/
 		}
 
 	}
