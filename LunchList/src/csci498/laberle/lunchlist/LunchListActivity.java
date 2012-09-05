@@ -5,13 +5,17 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -31,13 +35,40 @@ public class LunchListActivity extends Activity {
 		configureAddressField();
 		//addRadioButtons();
 	}
-	
+
 	public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
 		RestaurantAdapter() {
 			super(LunchListActivity.this,
-				android.R.layout.simple_list_item_1, 
-				restaurants);
-		}			
+					android.R.layout.simple_list_item_1, 
+					restaurants);
+		}		
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View row = convertView;
+			Restaurant rest = restaurants.get(position);
+
+			return initializeRow(row, rest);
+		}
+
+		private View initializeRow(View row, Restaurant rest) {
+			if (row == null) {
+				LayoutInflater inflater = getLayoutInflater();
+				row = inflater.inflate(R.layout.row, null);
+			}
+
+			((TextView) row.findViewById(R.id.title)).setText(rest.getName());
+			((TextView) row.findViewById(R.id.address)).setText(rest.getAddress());
+			ImageView icon = (ImageView) row.findViewById(R.id.icon);
+			switch (rest.getType()) {
+			case SIT_DOWN:
+				icon.setImageResource(R.drawable.sit_down);
+			case TAKE_OUT:
+				icon.setImageResource(R.drawable.take_out);
+			case DELIVERY:
+				icon.setImageResource(R.drawable.delivery);
+			}
+			return row;
+		}
 	}
 
 	private void configureAddressField() {
@@ -45,14 +76,14 @@ public class LunchListActivity extends Activity {
 		for (Restaurant r : restaurants) {
 			addresses.add(r.getAddress());
 		}
-		
+
 		addressAdapter = new ArrayAdapter<String>(
 				this,
 				android.R.layout.simple_dropdown_item_1line,
 				addresses);
-		
+
 		AutoCompleteTextView address = (AutoCompleteTextView)
-		findViewById(R.id.addr);
+				findViewById(R.id.addr);
 		address.setAdapter(addressAdapter);
 	}
 
@@ -124,5 +155,5 @@ public class LunchListActivity extends Activity {
 			return null;
 		}
 	}
-	
+
 }
