@@ -14,12 +14,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 
 public class LunchListActivity extends Activity {
 
 	List<Restaurant> restaurants = new ArrayList<Restaurant>();
-	ArrayAdapter<Restaurant> adapter = null;
+	RestaurantAdapter adapter = null;
 	ArrayAdapter<String> addressAdapter = null;
 
 	@Override
@@ -31,6 +30,14 @@ public class LunchListActivity extends Activity {
 		configureRestaurantList();
 		configureAddressField();
 		//addRadioButtons();
+	}
+	
+	public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
+		RestaurantAdapter() {
+			super(LunchListActivity.this,
+				android.R.layout.simple_list_item_1, 
+				restaurants);
+		}			
 	}
 
 	private void configureAddressField() {
@@ -60,10 +67,7 @@ public class LunchListActivity extends Activity {
 		spinner.setAdapter(restaurantAdapter);*/
 
 		ListView list = (ListView) findViewById(R.id.restaurants);
-		adapter = new ArrayAdapter<Restaurant>
-				(this, 
-				android.R.layout.simple_list_item_1, 
-				restaurants);
+		adapter = new RestaurantAdapter();
 		list.setAdapter(adapter);
 	}
 
@@ -120,4 +124,5 @@ public class LunchListActivity extends Activity {
 			return null;
 		}
 	}
+	
 }
