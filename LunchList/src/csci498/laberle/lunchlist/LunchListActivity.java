@@ -33,63 +33,8 @@ public class LunchListActivity extends Activity {
 		configureButton();
 		configureRestaurantList();
 		configureAddressField();
-		//addRadioButtons();
 	}
 
-	public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
-		RestaurantAdapter() {
-			super(LunchListActivity.this,
-					android.R.layout.simple_list_item_1, 
-					restaurants);
-		}		
-
-		public View getView(int position, View convertView, ViewGroup parent) {
-			return initializeRow(position, parent, convertView);
-		}
-
-		private View initializeRow(int position, ViewGroup parent, View row) {
-			RestaurantHolder holder;
-			if (row == null) {
-				LayoutInflater inflater = getLayoutInflater();
-				row = inflater.inflate(R.layout.row, parent, false);
-				holder = new RestaurantHolder(row);
-				row.setTag(holder);
-			}
-			else {
-				holder = (RestaurantHolder) row.getTag();
-			}
-
-			holder.populateFrom(restaurants.get(position));
-			return row;
-		}
-
-	}
-
-	static class RestaurantHolder {
-		private TextView name = null;
-		private TextView address = null;
-		private ImageView icon = null;
-
-		RestaurantHolder(View row) {
-			name = (TextView)row.findViewById(R.id.title);
-			address = (TextView)row.findViewById(R.id.address);
-			icon = (ImageView)row.findViewById(R.id.icon);
-		}
-
-		void populateFrom(Restaurant r) {
-			name.setText(r.getName());
-			address.setText(r.getAddress());
-			switch (r.getType()) {
-			case SIT_DOWN:
-				icon.setImageResource(R.drawable.sit_down);
-			case TAKE_OUT:
-				icon.setImageResource(R.drawable.take_out);
-			case DELIVERY:
-				icon.setImageResource(R.drawable.delivery);
-			}
-		}
-
-	}
 
 	private void configureAddressField() {
 		List<String> addresses = new ArrayList<String>();
@@ -103,7 +48,7 @@ public class LunchListActivity extends Activity {
 				addresses);
 
 		AutoCompleteTextView address = (AutoCompleteTextView)
-				findViewById(R.id.addr);
+			findViewById(R.id.addr);
 		address.setAdapter(addressAdapter);
 	}
 
@@ -174,6 +119,61 @@ public class LunchListActivity extends Activity {
 		default:
 			return null;
 		}
+	}
+	
+	public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
+		RestaurantAdapter() {
+			super(LunchListActivity.this,
+					R.layout.row, 
+					restaurants);
+		}		
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+			return initializeRow(position, parent, convertView);
+		}
+
+		private View initializeRow(int position, ViewGroup parent, View row) {
+			RestaurantHolder holder;
+			if (row == null) {
+				LayoutInflater inflater = getLayoutInflater();
+				row = inflater.inflate(R.layout.row, parent, false);
+				holder = new RestaurantHolder(row);
+				row.setTag(holder);
+			}
+			else {
+				holder = (RestaurantHolder) row.getTag();
+			}
+
+			holder.populateFrom(restaurants.get(position));
+			return row;
+		}
+		
+	}
+
+	static class RestaurantHolder {
+		private TextView name = null;
+		private TextView address = null;
+		private ImageView icon = null;
+
+		RestaurantHolder(View row) {
+			name = (TextView)row.findViewById(R.id.title);
+			address = (TextView)row.findViewById(R.id.address);
+			icon = (ImageView)row.findViewById(R.id.icon);
+		}
+
+		void populateFrom(Restaurant r) {
+			name.setText(r.getName());
+			address.setText(r.getAddress());
+			switch (r.getType()) {
+			case SIT_DOWN:
+				icon.setImageResource(R.drawable.sit_down);
+			case TAKE_OUT:
+				icon.setImageResource(R.drawable.take_out);
+			case DELIVERY:
+				icon.setImageResource(R.drawable.delivery);
+			}
+		}
+
 	}
 
 }
