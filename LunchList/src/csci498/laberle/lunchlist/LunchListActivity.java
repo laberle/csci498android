@@ -127,7 +127,24 @@ public class LunchListActivity extends Activity {
 			super(LunchListActivity.this,
 					R.layout.row, 
 					restaurants);
-		}		
+		}
+		
+		public int getViewTypeCount() {
+			return RestaurantType.values().length;
+		}
+		
+		public int getItemViewType(int position) {
+			switch (restaurants.get(position).getType()) {
+			case SIT_DOWN:
+				return RestaurantType.SIT_DOWN.getIndex();
+			case TAKE_OUT:
+				return RestaurantType.TAKE_OUT.getIndex();
+			case DELIVERY:
+				return RestaurantType.DELIVERY.getIndex();
+			default:
+				return -1;
+			}
+		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 			return initializeRow(position, parent, convertView);
@@ -137,7 +154,19 @@ public class LunchListActivity extends Activity {
 			RestaurantHolder holder;
 			if (row == null) {
 				LayoutInflater inflater = getLayoutInflater();
-				row = inflater.inflate(R.layout.row, parent, false);
+				
+				switch (restaurants.get(position).getType()) {
+				case SIT_DOWN:
+					row = inflater.inflate(R.layout.row_sit_down, parent, false);
+					break;
+				case TAKE_OUT:
+					row = inflater.inflate(R.layout.row_take_out, parent, false);
+					break;
+				case DELIVERY:
+					row = inflater.inflate(R.layout.row_delivery, parent, false);
+					break;
+				}
+				
 				holder = new RestaurantHolder(row);
 				row.setTag(holder);
 			}
@@ -165,7 +194,7 @@ public class LunchListActivity extends Activity {
 		void populateFrom(Restaurant r) {
 			name.setText(r.getName());
 			address.setText(r.getAddress());
-			switch (r.getType()) {
+			/*switch (r.getType()) {
 			case SIT_DOWN:
 				icon.setImageResource(R.drawable.sit_down);
 				name.setTextColor(Color.RED);
@@ -178,7 +207,7 @@ public class LunchListActivity extends Activity {
 				icon.setImageResource(R.drawable.delivery);
 				name.setTextColor(Color.GREEN);
 				break;
-			}
+			}*/
 		}
 
 	}

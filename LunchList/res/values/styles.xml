@@ -1,5 +1,9 @@
 <resources>
 
     <style name="AppTheme" parent="android:Theme.Black" />
+    
+    <color name="red">#FF0000</color>
+    <color name="yellow">#EEEE00</color>
+    <color name="green">#00FF00</color>
 
 </resources>
