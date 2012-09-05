@@ -44,22 +44,42 @@ public class LunchListActivity extends Activity {
 		}		
 
 		public View getView(int position, View convertView, ViewGroup parent) {
-			View row = convertView;
-			Restaurant rest = restaurants.get(position);
-
-			return initializeRow(row, rest);
+			return initializeRow(position, parent, convertView);
 		}
 
-		private View initializeRow(View row, Restaurant rest) {
+		private View initializeRow(int position, ViewGroup parent, View row) {
+			RestaurantHolder holder;
 			if (row == null) {
 				LayoutInflater inflater = getLayoutInflater();
-				row = inflater.inflate(R.layout.row, null);
+				row = inflater.inflate(R.layout.row, parent, false);
+				holder = new RestaurantHolder(row);
+				row.setTag(holder);
+			}
+			else {
+				holder = (RestaurantHolder) row.getTag();
 			}
 
-			((TextView) row.findViewById(R.id.title)).setText(rest.getName());
-			((TextView) row.findViewById(R.id.address)).setText(rest.getAddress());
-			ImageView icon = (ImageView) row.findViewById(R.id.icon);
-			switch (rest.getType()) {
+			holder.populateFrom(restaurants.get(position));
+			return row;
+		}
+
+	}
+
+	static class RestaurantHolder {
+		private TextView name = null;
+		private TextView address = null;
+		private ImageView icon = null;
+
+		RestaurantHolder(View row) {
+			name = (TextView)row.findViewById(R.id.title);
+			address = (TextView)row.findViewById(R.id.address);
+			icon = (ImageView)row.findViewById(R.id.icon);
+		}
+
+		void populateFrom(Restaurant r) {
+			name.setText(r.getName());
+			address.setText(r.getAddress());
+			switch (r.getType()) {
 			case SIT_DOWN:
 				icon.setImageResource(R.drawable.sit_down);
 			case TAKE_OUT:
@@ -67,8 +87,8 @@ public class LunchListActivity extends Activity {
 			case DELIVERY:
 				icon.setImageResource(R.drawable.delivery);
 			}
-			return row;
 		}
+
 	}
 
 	private void configureAddressField() {
