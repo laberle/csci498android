@@ -152,7 +152,7 @@ public class LunchListActivity extends Activity {
 	}
 
 	static class RestaurantHolder {
-		private TextView name = null;
+		private TextView name = null; 
 		private TextView address = null;
 		private ImageView icon = null;
 
