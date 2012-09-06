@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -72,7 +74,13 @@ public class LunchListActivity extends TabActivity {
 		ListView list = (ListView) findViewById(R.id.restaurants);
 		adapter = new RestaurantAdapter();
 		list.setAdapter(adapter);
+		list.setOnItemClickListener(onListClick);
 	}
+	
+	private OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
+		public void onItemClick(AdapterView<?> parent, View view, 
+				int position, long id) {}
+	};
 
 	private void configureButton() {
 		Button save = (Button) findViewById(R.id.save);
@@ -95,6 +103,8 @@ public class LunchListActivity extends TabActivity {
 			addressAdapter.add(restaurant.getAddress());
 		}
 	};
+	
+
 
 	private RestaurantType getTypeFromRadioButtons(RadioGroup types) {
 		switch (types.getCheckedRadioButtonId()) {
