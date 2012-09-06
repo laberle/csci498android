@@ -22,15 +22,20 @@ import android.widget.RadioGroup;
 
 @SuppressWarnings("deprecation")
 public class LunchListActivity extends TabActivity {
-
+	
 	List<Restaurant> restaurants = new ArrayList<Restaurant>();
 	RestaurantAdapter adapter = null;
 	ArrayAdapter<String> addressAdapter = null;
+	EditText name = null;
+	EditText address = null;
+	RadioGroup types = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lunch_list);
+
+		initializeFormMembers();
 
 		configureButton();
 		configureRestaurantList();
@@ -39,18 +44,25 @@ public class LunchListActivity extends TabActivity {
 	}
 
 
+	private void initializeFormMembers() {
+		name = (EditText) findViewById(R.id.name);
+		address = (EditText) findViewById(R.id.addr);
+		types = (RadioGroup) findViewById(R.id.types);
+	}
+
+
 	private void configureTabs() {
 		TabHost.TabSpec spec = getTabHost().newTabSpec("tag1");
 		spec.setContent(R.id.restaurants);
 		spec.setIndicator("List", getResources()
-			.getDrawable(R.drawable.list));
+				.getDrawable(R.drawable.list));
 		getTabHost().addTab(spec);
 		spec = getTabHost().newTabSpec("tag2");
 		spec.setContent(R.id.details);
 		spec.setIndicator("Details", getResources()
 				.getDrawable(R.drawable.restaurant));
 		getTabHost().addTab(spec);
-		getTabHost().setCurrentTab(0);
+		getTabHost().setCurrentTab(Tabs.LIST.getIndex());
 	}
 
 
@@ -76,10 +88,26 @@ public class LunchListActivity extends TabActivity {
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(onListClick);
 	}
-	
+
 	private OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
 		public void onItemClick(AdapterView<?> parent, View view, 
-				int position, long id) {}
+				int position, long id) {
+			Restaurant r = restaurants.get(position);
+			name.setText(r.getName());
+			address.setText(r.getAddress());
+
+			switch (r.getType()) {
+			case SIT_DOWN:
+				types.check(R.id.sit_down);
+				break;
+			case TAKE_OUT:
+				types.check(R.id.take_out);
+				break;
+			case DELIVERY:
+				types.check(R.id.delivery);
+			}
+			getTabHost().setCurrentTab(Tabs.DETAILS.getIndex());
+		}
 	};
 
 	private void configureButton() {
@@ -103,7 +131,7 @@ public class LunchListActivity extends TabActivity {
 			addressAdapter.add(restaurant.getAddress());
 		}
 	};
-	
+
 
 
 	private RestaurantType getTypeFromRadioButtons(RadioGroup types) {
@@ -191,6 +219,19 @@ public class LunchListActivity extends TabActivity {
 			address.setText(r.getAddress());
 		}
 
+	}
+	
+	private enum Tabs {
+		LIST(0),
+		DETAILS(1);
+		
+		private int index;
+		Tabs(int index) {
+			this.index = index;
+		}
+		public int getIndex() {
+			return index;
+		}
 	}
 
 }
