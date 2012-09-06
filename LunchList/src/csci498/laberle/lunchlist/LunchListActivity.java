@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
-import android.app.Activity;
+import android.app.TabActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,10 +14,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.RadioGroup;
 
-public class LunchListActivity extends Activity {
+@SuppressWarnings("deprecation")
+public class LunchListActivity extends TabActivity {
 
 	List<Restaurant> restaurants = new ArrayList<Restaurant>();
 	RestaurantAdapter adapter = null;
@@ -31,6 +33,22 @@ public class LunchListActivity extends Activity {
 		configureButton();
 		configureRestaurantList();
 		configureAddressField();
+		configureTabs();
+	}
+
+
+	private void configureTabs() {
+		TabHost.TabSpec spec = getTabHost().newTabSpec("tag1");
+		spec.setContent(R.id.restaurants);
+		spec.setIndicator("List", getResources()
+			.getDrawable(R.drawable.list));
+		getTabHost().addTab(spec);
+		spec = getTabHost().newTabSpec("tag2");
+		spec.setContent(R.id.details);
+		spec.setIndicator("Details", getResources()
+				.getDrawable(R.drawable.restaurant));
+		getTabHost().addTab(spec);
+		getTabHost().setCurrentTab(0);
 	}
 
 
@@ -46,7 +64,7 @@ public class LunchListActivity extends Activity {
 				addresses);
 
 		AutoCompleteTextView address = (AutoCompleteTextView)
-			findViewById(R.id.addr);
+				findViewById(R.id.addr);
 		address.setAdapter(addressAdapter);
 	}
 
@@ -90,18 +108,18 @@ public class LunchListActivity extends Activity {
 			return null;
 		}
 	}
-	
+
 	public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
 		RestaurantAdapter() {
 			super(LunchListActivity.this,
 					R.layout.row, 
 					restaurants);
 		}
-		
+
 		public int getViewTypeCount() {
 			return RestaurantType.values().length;
 		}
-		
+
 		public int getItemViewType(int position) {
 			switch (restaurants.get(position).getType()) {
 			case SIT_DOWN:
@@ -123,7 +141,7 @@ public class LunchListActivity extends Activity {
 			RestaurantHolder holder;
 			if (row == null) {
 				LayoutInflater inflater = getLayoutInflater();
-				
+
 				switch (restaurants.get(position).getType()) {
 				case SIT_DOWN:
 					row = inflater.inflate(R.layout.row_sit_down, parent, false);
@@ -135,7 +153,7 @@ public class LunchListActivity extends Activity {
 					row = inflater.inflate(R.layout.row_delivery, parent, false);
 					break;
 				}
-				
+
 				holder = new RestaurantHolder(row);
 				row.setTag(holder);
 			}
@@ -146,7 +164,7 @@ public class LunchListActivity extends Activity {
 			holder.populateFrom(restaurants.get(position));
 			return row;
 		}
-		
+
 	}
 
 	static class RestaurantHolder {
