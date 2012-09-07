@@ -1,13 +1,12 @@
 package csci498.laberle.lunchlist;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import android.os.Bundle;
-import android.app.TabActivity;
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,9 +22,10 @@ import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.RadioGroup;
+import android.widget.ViewFlipper;
 
 @SuppressWarnings("deprecation")
-public class LunchListActivity extends TabActivity {
+public class LunchListActivity extends Activity {
 	
 	List<Restaurant> restaurants = new ArrayList<Restaurant>();
 	RestaurantAdapter adapter = null;
@@ -34,30 +34,32 @@ public class LunchListActivity extends TabActivity {
 	EditText address = null;
 	RadioGroup types = null;
 	DatePicker date = null;
+	ViewFlipper flipView = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lunch_list);
 
-		initializeFormMembers();
+		initializeMembers();
 
 		configureButton();
 		configureRestaurantList();
 		configureAddressField();
-		configureTabs();
+		//configureTabs();
 	}
 
 
-	private void initializeFormMembers() {
+	private void initializeMembers() {
 		name = (EditText) findViewById(R.id.name);
 		address = (EditText) findViewById(R.id.addr);
 		types = (RadioGroup) findViewById(R.id.types);
 		date = (DatePicker) findViewById(R.id.date);
+		flipView = (ViewFlipper) findViewById(R.id.flipview);
 	}
 
 
-	private void configureTabs() {
+	/*private void configureTabs() {
 		TabHost.TabSpec spec = getTabHost().newTabSpec("tag1");
 		spec.setContent(R.id.restaurants);
 		spec.setIndicator("List", getResources()
@@ -69,7 +71,7 @@ public class LunchListActivity extends TabActivity {
 				.getDrawable(R.drawable.restaurant));
 		getTabHost().addTab(spec);
 		getTabHost().setCurrentTab(Tabs.LIST.getIndex());
-	}
+	}*/
 
 
 	private void configureAddressField() {
@@ -114,7 +116,8 @@ public class LunchListActivity extends TabActivity {
 			case DELIVERY:
 				types.check(R.id.delivery);
 			}
-			getTabHost().setCurrentTab(Tabs.DETAILS.getIndex());
+			//getTabHost().setCurrentTab(Tabs.DETAILS.getIndex());
+			flipView.setDisplayedChild(Tabs.DETAILS.getIndex());
 		}
 	};
 
@@ -143,8 +146,14 @@ public class LunchListActivity extends TabActivity {
 			addressAdapter.add(restaurant.getAddress());
 		}
 	};
-
-
+	
+	public void onListButtonClick(View v) {
+		flipView.setDisplayedChild(Tabs.LIST.getIndex());
+	}
+	
+	public void onDetailsButtonClick(View v) {
+		flipView.setDisplayedChild(Tabs.DETAILS.getIndex());
+	}
 
 	private RestaurantType getTypeFromRadioButtons(RadioGroup types) {
 		switch (types.getCheckedRadioButtonId()) {

@@ -13,5 +13,7 @@
     <string name="delivery">Delivery</string>
     <string name="dateLastVisit">Date of Last Visit:</string>
     <string name="restaurantIcon">Restaurant Icon</string>
+    <string name="list">List</string>
+    <string name="details">Details</string>
 
 </resources>
