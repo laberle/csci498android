@@ -1,6 +1,9 @@
 package csci498.laberle.lunchlist;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -29,6 +33,7 @@ public class LunchListActivity extends TabActivity {
 	EditText name = null;
 	EditText address = null;
 	RadioGroup types = null;
+	DatePicker date = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,7 @@ public class LunchListActivity extends TabActivity {
 		name = (EditText) findViewById(R.id.name);
 		address = (EditText) findViewById(R.id.addr);
 		types = (RadioGroup) findViewById(R.id.types);
+		date = (DatePicker) findViewById(R.id.date);
 	}
 
 
@@ -95,6 +101,8 @@ public class LunchListActivity extends TabActivity {
 			Restaurant r = restaurants.get(position);
 			name.setText(r.getName());
 			address.setText(r.getAddress());
+			Calendar c = r.getDate();
+			date.init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), null);
 
 			switch (r.getType()) {
 			case SIT_DOWN:
@@ -122,10 +130,14 @@ public class LunchListActivity extends TabActivity {
 			EditText name = (EditText) findViewById(R.id.name);
 			EditText address = (EditText) findViewById(R.id.addr);
 			RadioGroup types = (RadioGroup) findViewById(R.id.types);
+			DatePicker datePicker = (DatePicker) findViewById(R.id.date);
 
 			restaurant.setName(name.getText().toString());
 			restaurant.setAddress(address.getText().toString());
 			restaurant.setType(getTypeFromRadioButtons(types));
+			Calendar c = Calendar.getInstance();
+			c.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
+			restaurant.setDate(c);
 
 			adapter.add(restaurant);
 			addressAdapter.add(restaurant.getAddress());
@@ -208,15 +220,20 @@ public class LunchListActivity extends TabActivity {
 	static class RestaurantHolder {
 		private TextView name = null; 
 		private TextView address = null;
+		private TextView date = null;
 
 		RestaurantHolder(View row) {
-			name = (TextView)row.findViewById(R.id.title);
-			address = (TextView)row.findViewById(R.id.address);
+			name = (TextView) row.findViewById(R.id.title);
+			address = (TextView) row.findViewById(R.id.address);
+			date = (TextView) row.findViewById(R.id.date_text);
 		}
 
 		void populateFrom(Restaurant r) {
 			name.setText(r.getName());
 			address.setText(r.getAddress());
+			
+			SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd yyyy");
+			date.setText(dateFormat.format(r.getDate().getTime()));
 		}
 
 	}

@@ -1,13 +1,16 @@
 package csci498.laberle.lunchlist;
 
+import java.util.Calendar;
+
 public class Restaurant {
 
 	private String address = "";
 	private String name = "";
 	private RestaurantType type = null;
+	private Calendar date = null;
 
 	public String toString() {
-		return name;
+		return getName();
 	}
 	
 	public String getAddress() {
@@ -27,6 +30,12 @@ public class Restaurant {
 	}
 	public void setType(RestaurantType type) {
 		this.type = type;
+	}
+	public Calendar getDate() {
+		return date;
+	}
+	public void setDate(Calendar date) {
+		this.date = date;
 	}
 	
 }

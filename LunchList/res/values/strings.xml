@@ -11,6 +11,7 @@
     <string name="take_out">Take-Out</string>
     <string name="sit_down">Sit-Down</string>
     <string name="delivery">Delivery</string>
+    <string name="dateLastVisit">Date of Last Visit:</string>
     <string name="restaurantIcon">Restaurant Icon</string>
 
 </resources>

@@ -63,7 +63,9 @@
 
                     <TableRow>
 
-                        <TextView android:text="@string/type" />
+                        <TextView
+                            android:text="@string/type"
+                            android:textStyle="bold" />
 
                         <RadioGroup android:id="@+id/types" >
 
@@ -80,6 +82,23 @@
                                 android:id="@+id/delivery"
                                 android:text="@string/delivery" />
                         </RadioGroup>
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:text="@string/dateLastVisit"
+                            android:textStyle="bold" />
+
+                        <HorizontalScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" >
+
+                            <DatePicker
+                                android:id="@+id/date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </HorizontalScrollView>
                     </TableRow>
 
                     <Button
