@@ -26,7 +26,7 @@ import android.widget.ViewFlipper;
 
 @SuppressWarnings("deprecation")
 public class LunchListActivity extends Activity {
-	
+
 	List<Restaurant> restaurants = new ArrayList<Restaurant>();
 	RestaurantAdapter adapter = null;
 	ArrayAdapter<String> addressAdapter = null;
@@ -49,7 +49,6 @@ public class LunchListActivity extends Activity {
 		//configureTabs();
 	}
 
-
 	private void initializeMembers() {
 		name = (EditText) findViewById(R.id.name);
 		address = (EditText) findViewById(R.id.addr);
@@ -57,7 +56,6 @@ public class LunchListActivity extends Activity {
 		date = (DatePicker) findViewById(R.id.date);
 		flipView = (ViewFlipper) findViewById(R.id.flipview);
 	}
-
 
 	/*private void configureTabs() {
 		TabHost.TabSpec spec = getTabHost().newTabSpec("tag1");
@@ -73,7 +71,6 @@ public class LunchListActivity extends Activity {
 		getTabHost().setCurrentTab(Tabs.LIST.getIndex());
 	}*/
 
-
 	private void configureAddressField() {
 		List<String> addresses = new ArrayList<String>();
 		for (Restaurant r : restaurants) {
@@ -81,12 +78,12 @@ public class LunchListActivity extends Activity {
 		}
 
 		addressAdapter = new ArrayAdapter<String>(
-				this,
-				android.R.layout.simple_dropdown_item_1line,
-				addresses);
+			this,
+			android.R.layout.simple_dropdown_item_1line,
+			addresses);
 
 		AutoCompleteTextView address = (AutoCompleteTextView)
-				findViewById(R.id.addr);
+			findViewById(R.id.addr);
 		address.setAdapter(addressAdapter);
 	}
 
@@ -98,8 +95,9 @@ public class LunchListActivity extends Activity {
 	}
 
 	private OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
+		
 		public void onItemClick(AdapterView<?> parent, View view, 
-				int position, long id) {
+			int position, long id) {
 			Restaurant r = restaurants.get(position);
 			name.setText(r.getName());
 			address.setText(r.getAddress());
@@ -127,6 +125,7 @@ public class LunchListActivity extends Activity {
 	}
 
 	private View.OnClickListener onSave = new OnClickListener() {
+		
 		public void onClick(View v) {
 			Restaurant restaurant = new Restaurant();
 
@@ -146,11 +145,11 @@ public class LunchListActivity extends Activity {
 			addressAdapter.add(restaurant.getAddress());
 		}
 	};
-	
+
 	public void onListButtonClick(View v) {
 		flipView.setDisplayedChild(Tabs.LIST.getIndex());
 	}
-	
+
 	public void onDetailsButtonClick(View v) {
 		flipView.setDisplayedChild(Tabs.DETAILS.getIndex());
 	}
@@ -171,8 +170,8 @@ public class LunchListActivity extends Activity {
 	public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
 		RestaurantAdapter() {
 			super(LunchListActivity.this,
-					R.layout.row, 
-					restaurants);
+				R.layout.row, 
+				restaurants);
 		}
 
 		public int getViewTypeCount() {
@@ -240,17 +239,17 @@ public class LunchListActivity extends Activity {
 		void populateFrom(Restaurant r) {
 			name.setText(r.getName());
 			address.setText(r.getAddress());
-			
+
 			SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd yyyy");
 			date.setText(dateFormat.format(r.getDate().getTime()));
 		}
 
 	}
-	
+
 	private enum Tabs {
 		LIST(0),
 		DETAILS(1);
-		
+
 		private int index;
 		Tabs(int index) {
 			this.index = index;
