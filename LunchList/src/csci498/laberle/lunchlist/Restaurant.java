@@ -12,7 +12,7 @@ public class Restaurant {
 	public String toString() {
 		return getName();
 	}
-	
+
 	public String getAddress() {
 		return address;
 	}
@@ -37,7 +37,7 @@ public class Restaurant {
 	public void setDate(Calendar date) {
 		this.date = date;
 	}
-	
+
 }
 
 

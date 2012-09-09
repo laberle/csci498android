@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.os.Bundle;
-import android.app.Activity;
+import android.app.TabActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,10 +22,9 @@ import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.RadioGroup;
-import android.widget.ViewFlipper;
 
 @SuppressWarnings("deprecation")
-public class LunchListActivity extends Activity {
+public class LunchListActivity extends TabActivity {
 
 	List<Restaurant> restaurants = new ArrayList<Restaurant>();
 	RestaurantAdapter adapter = null;
@@ -34,7 +33,6 @@ public class LunchListActivity extends Activity {
 	EditText address = null;
 	RadioGroup types = null;
 	DatePicker date = null;
-	ViewFlipper flipView = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +44,7 @@ public class LunchListActivity extends Activity {
 		configureButton();
 		configureRestaurantList();
 		configureAddressField();
-		//configureTabs();
+		configureTabs();
 	}
 
 	private void initializeMembers() {
@@ -54,22 +52,21 @@ public class LunchListActivity extends Activity {
 		address = (EditText) findViewById(R.id.addr);
 		types = (RadioGroup) findViewById(R.id.types);
 		date = (DatePicker) findViewById(R.id.date);
-		flipView = (ViewFlipper) findViewById(R.id.flipview);
 	}
 
-	/*private void configureTabs() {
+	private void configureTabs() {
 		TabHost.TabSpec spec = getTabHost().newTabSpec("tag1");
 		spec.setContent(R.id.restaurants);
 		spec.setIndicator("List", getResources()
-				.getDrawable(R.drawable.list));
+			.getDrawable(R.drawable.list));
 		getTabHost().addTab(spec);
 		spec = getTabHost().newTabSpec("tag2");
 		spec.setContent(R.id.details);
 		spec.setIndicator("Details", getResources()
-				.getDrawable(R.drawable.restaurant));
+			.getDrawable(R.drawable.restaurant));
 		getTabHost().addTab(spec);
 		getTabHost().setCurrentTab(Tabs.LIST.getIndex());
-	}*/
+	}
 
 	private void configureAddressField() {
 		List<String> addresses = new ArrayList<String>();
@@ -95,7 +92,7 @@ public class LunchListActivity extends Activity {
 	}
 
 	private OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
-		
+
 		public void onItemClick(AdapterView<?> parent, View view, 
 			int position, long id) {
 			Restaurant r = restaurants.get(position);
@@ -114,8 +111,7 @@ public class LunchListActivity extends Activity {
 			case DELIVERY:
 				types.check(R.id.delivery);
 			}
-			//getTabHost().setCurrentTab(Tabs.DETAILS.getIndex());
-			flipView.setDisplayedChild(Tabs.DETAILS.getIndex());
+			getTabHost().setCurrentTab(Tabs.DETAILS.getIndex());
 		}
 	};
 
@@ -125,7 +121,7 @@ public class LunchListActivity extends Activity {
 	}
 
 	private View.OnClickListener onSave = new OnClickListener() {
-		
+
 		public void onClick(View v) {
 			Restaurant restaurant = new Restaurant();
 
@@ -145,14 +141,6 @@ public class LunchListActivity extends Activity {
 			addressAdapter.add(restaurant.getAddress());
 		}
 	};
-
-	public void onListButtonClick(View v) {
-		flipView.setDisplayedChild(Tabs.LIST.getIndex());
-	}
-
-	public void onDetailsButtonClick(View v) {
-		flipView.setDisplayedChild(Tabs.DETAILS.getIndex());
-	}
 
 	private RestaurantType getTypeFromRadioButtons(RadioGroup types) {
 		switch (types.getCheckedRadioButtonId()) {
