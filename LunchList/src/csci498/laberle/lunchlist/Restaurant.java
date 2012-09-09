@@ -7,6 +7,7 @@ public class Restaurant {
 	private String address = "";
 	private String name = "";
 	private RestaurantType type = null;
+	private String notes = "";
 	private Calendar date = null;
 
 	public String toString() {
@@ -37,7 +38,13 @@ public class Restaurant {
 	public void setDate(Calendar date) {
 		this.date = date;
 	}
-
+	public String getNotes() {
+		return notes;
+	}
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
+	
 }
 
 

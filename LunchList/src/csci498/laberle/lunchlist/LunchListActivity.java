@@ -32,7 +32,8 @@ public class LunchListActivity extends TabActivity {
 	EditText name = null;
 	EditText address = null;
 	RadioGroup types = null;
-	DatePicker date = null;
+	DatePicker datePicker = null;
+	EditText notes = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,8 @@ public class LunchListActivity extends TabActivity {
 		name = (EditText) findViewById(R.id.name);
 		address = (EditText) findViewById(R.id.addr);
 		types = (RadioGroup) findViewById(R.id.types);
-		date = (DatePicker) findViewById(R.id.date);
+		datePicker = (DatePicker) findViewById(R.id.date);
+		notes = (EditText) findViewById(R.id.notes);
 	}
 
 	private void configureTabs() {
@@ -95,13 +97,14 @@ public class LunchListActivity extends TabActivity {
 
 		public void onItemClick(AdapterView<?> parent, View view, 
 			int position, long id) {
-			Restaurant r = restaurants.get(position);
-			name.setText(r.getName());
-			address.setText(r.getAddress());
-			Calendar c = r.getDate();
-			date.init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), null);
+			Restaurant rest = restaurants.get(position);
+			name.setText(rest.getName());
+			address.setText(rest.getAddress());
+			notes.setText(rest.getNotes());
+			Calendar c = rest.getDate();
+			datePicker.init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), null);
 
-			switch (r.getType()) {
+			switch (rest.getType()) {
 			case SIT_DOWN:
 				types.check(R.id.sit_down);
 				break;
@@ -125,17 +128,13 @@ public class LunchListActivity extends TabActivity {
 		public void onClick(View v) {
 			Restaurant restaurant = new Restaurant();
 
-			EditText name = (EditText) findViewById(R.id.name);
-			EditText address = (EditText) findViewById(R.id.addr);
-			RadioGroup types = (RadioGroup) findViewById(R.id.types);
-			DatePicker datePicker = (DatePicker) findViewById(R.id.date);
-
 			restaurant.setName(name.getText().toString());
 			restaurant.setAddress(address.getText().toString());
 			restaurant.setType(getTypeFromRadioButtons(types));
 			Calendar c = Calendar.getInstance();
 			c.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
 			restaurant.setDate(c);
+			restaurant.setNotes(notes.getText().toString());
 
 			adapter.add(restaurant);
 			addressAdapter.add(restaurant.getAddress());
@@ -224,12 +223,12 @@ public class LunchListActivity extends TabActivity {
 			date = (TextView) row.findViewById(R.id.date_text);
 		}
 
-		void populateFrom(Restaurant r) {
-			name.setText(r.getName());
-			address.setText(r.getAddress());
+		void populateFrom(Restaurant rest) {
+			name.setText(rest.getName());
+			address.setText(rest.getAddress());
 
 			SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd yyyy");
-			date.setText(dateFormat.format(r.getDate().getTime()));
+			date.setText(dateFormat.format(rest.getDate().getTime()));
 		}
 
 	}
