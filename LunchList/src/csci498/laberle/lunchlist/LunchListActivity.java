@@ -62,14 +62,21 @@ public class LunchListActivity extends TabActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.toast) {
-			String message = "No restaurant selected";
-			if (current != null) {
-				message = current.getNotes();
-			}
-			Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+			displayRestaurantNotes();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void displayRestaurantNotes() {
+		String message = "No restaurant selected!";
+		if (current != null) {
+			message = current.getNotes();
+			if (current.getNotes().equals("")) {
+				message = current.getName() + "has no notes!";
+			}
+		}
+		Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 	}
 
 	private void initializeMembers() {
