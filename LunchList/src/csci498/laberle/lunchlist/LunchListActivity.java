@@ -8,6 +8,8 @@ import java.util.List;
 import android.os.Bundle;
 import android.app.TabActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -42,10 +44,16 @@ public class LunchListActivity extends TabActivity {
 
 		initializeMembers();
 
-		configureButton();
+		configureSaveButton();
 		configureRestaurantList();
 		configureAddressField();
 		configureTabs();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		new MenuInflater(this).inflate(R.menu.option, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	private void initializeMembers() {
@@ -118,7 +126,7 @@ public class LunchListActivity extends TabActivity {
 		}
 	};
 
-	private void configureButton() {
+	private void configureSaveButton() {
 		Button save = (Button) findViewById(R.id.save);
 		save.setOnClickListener(onSave);
 	}
