@@ -12,7 +12,7 @@
     <string name="sit_down">Sit-Down</string>
     <string name="delivery">Delivery</string>
     <string name="dateLastVisit">Date of Last Visit:</string>
-    <string name="restaurantIcon">Restaurant Icon</string>
+    <string name="restaurant_icon">Restaurant Icon</string>
     <string name="list">List</string>
     <string name="details">Details</string>
     <string name="notes">Notes:</string>

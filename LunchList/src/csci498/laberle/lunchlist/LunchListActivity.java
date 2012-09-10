@@ -24,6 +24,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 import android.widget.RadioGroup;
 
@@ -39,6 +40,7 @@ public class LunchListActivity extends TabActivity {
 	RadioGroup types = null;
 	DatePicker datePicker = null;
 	EditText notes = null;
+	MenuItem otherTab = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,8 @@ public class LunchListActivity extends TabActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		new MenuInflater(this).inflate(R.menu.option, menu);
+		otherTab = menu.getItem(1);
+		setTabMenuItem();
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -65,7 +69,35 @@ public class LunchListActivity extends TabActivity {
 			displayRestaurantNotes();
 			return true;
 		}
+		else if (item.getItemId() == R.id.other_tab) {
+			switchTabs();
+			return true;
+		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void switchTabs() {
+		if (getTabHost().getCurrentTab() == Tabs.DETAILS.getIndex()) {
+			getTabHost().setCurrentTab(Tabs.LIST.getIndex());
+		}
+		else {
+			getTabHost().setCurrentTab(Tabs.DETAILS.getIndex());
+		}	
+
+		setTabMenuItem();
+	}
+
+	private void setTabMenuItem() {
+		if (otherTab != null) {
+			if (getTabHost().getCurrentTab() == Tabs.DETAILS.getIndex()) {
+				otherTab.setIcon(R.drawable.list);
+				otherTab.setTitle(R.string.list);
+			}
+			else {
+				otherTab.setIcon(R.drawable.details);
+				otherTab.setTitle(R.string.details);
+			}	
+		}
 	}
 
 	private void displayRestaurantNotes() {
@@ -77,9 +109,9 @@ public class LunchListActivity extends TabActivity {
 			}
 		}
 		AlertDialog alertDialog = new AlertDialog.Builder(this)
-			.setTitle("Raise Toast")
-			.setMessage(message)
-			.create();
+		.setTitle("Raise Toast")
+		.setMessage(message)
+		.create();
 		alertDialog.show();
 	}
 
@@ -100,9 +132,15 @@ public class LunchListActivity extends TabActivity {
 		spec = getTabHost().newTabSpec("tag2");
 		spec.setContent(R.id.details);
 		spec.setIndicator("Details", getResources()
-			.getDrawable(R.drawable.restaurant));
+			.getDrawable(R.drawable.details));
 		getTabHost().addTab(spec);
 		getTabHost().setCurrentTab(Tabs.LIST.getIndex());
+		getTabHost().setOnTabChangedListener(new OnTabChangeListener() {
+			@Override
+			public void onTabChanged(String tabId){
+				setTabMenuItem();
+			}
+		});
 	}
 
 	private void configureAddressField() {
@@ -149,7 +187,7 @@ public class LunchListActivity extends TabActivity {
 			case DELIVERY:
 				types.check(R.id.delivery);
 			}
-			getTabHost().setCurrentTab(Tabs.DETAILS.getIndex());
+			switchTabs();
 		}
 	};
 
