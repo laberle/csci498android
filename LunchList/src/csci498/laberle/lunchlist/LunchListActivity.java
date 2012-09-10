@@ -10,6 +10,7 @@ import android.app.TabActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -24,11 +25,13 @@ import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
 public class LunchListActivity extends TabActivity {
 
 	List<Restaurant> restaurants = new ArrayList<Restaurant>();
+	Restaurant current = null;
 	RestaurantAdapter adapter = null;
 	ArrayAdapter<String> addressAdapter = null;
 	EditText name = null;
@@ -54,6 +57,19 @@ public class LunchListActivity extends TabActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		new MenuInflater(this).inflate(R.menu.option, menu);
 		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.toast) {
+			String message = "No restaurant selected";
+			if (current != null) {
+				message = current.getNotes();
+			}
+			Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void initializeMembers() {
@@ -105,14 +121,14 @@ public class LunchListActivity extends TabActivity {
 
 		public void onItemClick(AdapterView<?> parent, View view, 
 			int position, long id) {
-			Restaurant rest = restaurants.get(position);
-			name.setText(rest.getName());
-			address.setText(rest.getAddress());
-			notes.setText(rest.getNotes());
-			Calendar c = rest.getDate();
+			current = restaurants.get(position);
+			name.setText(current.getName());
+			address.setText(current.getAddress());
+			notes.setText(current.getNotes());
+			Calendar c = current.getDate();
 			datePicker.init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), null);
 
-			switch (rest.getType()) {
+			switch (current.getType()) {
 			case SIT_DOWN:
 				types.check(R.id.sit_down);
 				break;
@@ -134,18 +150,18 @@ public class LunchListActivity extends TabActivity {
 	private View.OnClickListener onSave = new OnClickListener() {
 
 		public void onClick(View v) {
-			Restaurant restaurant = new Restaurant();
+			current = new Restaurant();
 
-			restaurant.setName(name.getText().toString());
-			restaurant.setAddress(address.getText().toString());
-			restaurant.setType(getTypeFromRadioButtons(types));
+			current.setName(name.getText().toString());
+			current.setAddress(address.getText().toString());
+			current.setType(getTypeFromRadioButtons(types));
 			Calendar c = Calendar.getInstance();
 			c.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
-			restaurant.setDate(c);
-			restaurant.setNotes(notes.getText().toString());
+			current.setDate(c);
+			current.setNotes(notes.getText().toString());
 
-			adapter.add(restaurant);
-			addressAdapter.add(restaurant.getAddress());
+			adapter.add(current);
+			addressAdapter.add(current.getAddress());
 		}
 	};
 

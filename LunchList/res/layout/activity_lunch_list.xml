@@ -108,6 +108,7 @@
                         <EditText
                             android:id="@+id/notes"
                             android:gravity="top"
+                            android:inputType="text"
                             android:lines="2"
                             android:maxLines="2"
                             android:maxWidth="200sp"
