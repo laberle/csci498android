@@ -53,6 +53,15 @@ public class LunchListActivity extends TabActivity {
 		configureRestaurantList();
 		configureAddressField();
 		configureTabs();
+		
+		//Intentionally create exception
+		try {
+			int x = 5/0;
+		} catch (Exception e) {
+			ErrorDialog dialog = new ErrorDialog(this);
+			dialog.setMessage(e.getMessage());
+			dialog.showDialogAndLogError();
+		}
 	}
 
 	@Override
