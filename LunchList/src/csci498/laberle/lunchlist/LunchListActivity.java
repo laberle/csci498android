@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.os.Bundle;
+import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,7 +26,6 @@ import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
 public class LunchListActivity extends TabActivity {
@@ -61,15 +61,26 @@ public class LunchListActivity extends TabActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.toast) {
-			String message = "No restaurant selected";
-			if (current != null) {
-				message = current.getNotes();
-			}
-			Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+		if (item.getItemId() == R.id.raise_toast) {
+			displayRestaurantNotes();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void displayRestaurantNotes() {
+		String message = "No restaurant selected!";
+		if (current != null) {
+			message = current.getNotes();
+			if (current.getNotes().equals("")) {
+				message = current.getName() + "has no notes!";
+			}
+		}
+		AlertDialog alertDialog = new AlertDialog.Builder(this)
+			.setTitle("Raise Toast")
+			.setMessage(message)
+			.create();
+		alertDialog.show();
 	}
 
 	private void initializeMembers() {
