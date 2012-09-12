@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -57,6 +59,8 @@ public class LunchListActivity extends TabActivity {
 		configureRestaurantList();
 		configureAddressField();
 		configureTabs();
+
+		startJob();
 	}
 
 	@Override
@@ -69,13 +73,6 @@ public class LunchListActivity extends TabActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.toast) {
 			displayRestaurantNotes();
-			return true;
-		}
-		else if (item.getItemId() == R.id.run) {
-			setProgressBarVisibility(true);
-			progress = 0;
-			new Thread(longTask).start();
-
 			return true;
 		}
 
@@ -199,36 +196,72 @@ public class LunchListActivity extends TabActivity {
 		}
 	}
 
-	private void doSomeLongWork(final int incr) {
+	private void startJob() {
+		setProgressBarVisibility(true);
+		progress = 0;
+		BlockingQueue<Integer> queue = new LinkedBlockingQueue<Integer>();
 
-		Runnable updateProgressBar = new Runnable() {
+		FakeJob fakeJob = new FakeJob(queue);
+		KillJob killJob = new KillJob(queue);
+
+		new Thread(fakeJob).start();
+		new Thread(killJob).start();
+	}
+	
+	private class FakeJob implements Runnable {
+		private BlockingQueue<Integer> queue = null;
+
+		public FakeJob(BlockingQueue<Integer> queue) {
+			this.queue = queue;
+		}
+
+		public void run() {
+			for (Integer i=0; i < 20; ++i) {
+				try {
+					queue.put(i);
+					SystemClock.sleep(250);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	};
+
+	private class KillJob implements Runnable {
+		private BlockingQueue<Integer> queue = null;
+		private Handler handler; 
+		private final int INCR = 500;
+
+		private Runnable updateProgressBar = new Runnable() {
 			public void run() {
-				progress += incr;
+				progress += INCR;
 				setProgress(progress);
 			}
 		};
-		
-		Handler handler = new Handler(Looper.getMainLooper());
-		handler.post(updateProgressBar);
-
-		SystemClock.sleep(250);
-	}
-
-	private Runnable longTask = new Runnable() {
-		public void run() {
-			for (int i = 0; i < 20; i++) {
-				doSomeLongWork(500);
+		private Runnable updateUiWhenDone = new Runnable() {
+			public void run() {
+				setProgressBarVisibility(false);
+				name.setText("Done updating!");
 			}
-			
-			Runnable updateUi = new Runnable() {
-				public void run() {
-					setProgressBarVisibility(false);
-					name.setText("Done updating!");
+		};
+
+		public KillJob(BlockingQueue<Integer> queue) {
+			this.queue = queue;
+			handler = new Handler(Looper.getMainLooper());
+		}
+
+		public void run() {
+
+			for (Integer i=0; i < 20; ++i) {
+				try {
+					queue.take();
+					handler.post(updateProgressBar);
+
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
-			};
-			
-			Handler handler = new Handler(Looper.getMainLooper());
-			handler.post(updateUi);
+			}
+			handler.post(updateUiWhenDone);
 		}
 	};
 

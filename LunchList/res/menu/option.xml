@@ -5,9 +5,5 @@
         android:id="@+id/toast"
         android:icon="@drawable/toast"
         android:title="Raise Toast"/>
-    <item
-        android:id="@+id/run"
-        android:icon="@drawable/run"
-        android:title="@string/run_long_task"/>
 
 </menu>
