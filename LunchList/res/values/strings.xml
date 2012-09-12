@@ -16,5 +16,6 @@
     <string name="list">List</string>
     <string name="details">Details</string>
     <string name="notes">Notes:</string>
+    <string name="run_long_task">Run Long Task</string>
 
 </resources>

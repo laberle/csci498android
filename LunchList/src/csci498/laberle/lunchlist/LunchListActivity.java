@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.app.TabActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -31,18 +33,20 @@ import android.widget.Toast;
 public class LunchListActivity extends TabActivity {
 
 	List<Restaurant> restaurants = new ArrayList<Restaurant>();
-	Restaurant current = null;
-	RestaurantAdapter adapter = null;
-	ArrayAdapter<String> addressAdapter = null;
-	EditText name = null;
-	EditText address = null;
-	RadioGroup types = null;
-	DatePicker datePicker = null;
-	EditText notes = null;
+	Restaurant current;
+	RestaurantAdapter adapter;
+	ArrayAdapter<String> addressAdapter;
+	EditText name;
+	EditText address;
+	RadioGroup types;
+	DatePicker datePicker;
+	EditText notes;
+	int progress;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_PROGRESS);
 		setContentView(R.layout.activity_lunch_list);
 
 		initializeMembers();
@@ -65,6 +69,10 @@ public class LunchListActivity extends TabActivity {
 			displayRestaurantNotes();
 			return true;
 		}
+		else if (item.getItemId() == R.id.run) {
+			new Thread(longTask).start();
+		}
+		
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -184,7 +192,19 @@ public class LunchListActivity extends TabActivity {
 			return null;
 		}
 	}
+	
+	private void doSomeLongWork(final int incr) {
+		SystemClock.sleep(250);
+	}
 
+	private Runnable longTask = new Runnable() {
+		public void run() {
+			for (int i = 0; i < 20; i++) {
+				doSomeLongWork(500);
+			}
+		}
+	};
+	
 	public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
 		RestaurantAdapter() {
 			super(LunchListActivity.this,
