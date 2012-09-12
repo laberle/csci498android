@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.app.TabActivity;
 import android.view.LayoutInflater;
@@ -198,12 +200,16 @@ public class LunchListActivity extends TabActivity {
 	}
 
 	private void doSomeLongWork(final int incr) {
-		runOnUiThread(new Runnable() {
+
+		Runnable updateProgressBar = new Runnable() {
 			public void run() {
 				progress += incr;
 				setProgress(progress);
 			}
-		});
+		};
+		
+		Handler handler = new Handler(Looper.getMainLooper());
+		handler.post(updateProgressBar);
 
 		SystemClock.sleep(250);
 	}
@@ -214,11 +220,15 @@ public class LunchListActivity extends TabActivity {
 				doSomeLongWork(500);
 			}
 			
-			runOnUiThread(new Runnable() {
+			Runnable updateUi = new Runnable() {
 				public void run() {
 					setProgressBarVisibility(false);
+					name.setText("Done updating!");
 				}
-			});
+			};
+			
+			Handler handler = new Handler(Looper.getMainLooper());
+			handler.post(updateUi);
 		}
 	};
 
