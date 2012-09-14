@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -42,6 +43,7 @@ public class LunchListActivity extends TabActivity {
 	DatePicker datePicker;
 	EditText notes;
 	int progress;
+	AtomicBoolean isActive = new AtomicBoolean(true);
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,23 @@ public class LunchListActivity extends TabActivity {
 	}
 
 	@Override
+	public void onPause() {
+		super.onPause();
+		isActive.set(false);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		isActive.set(true);
+
+		if (progress > 0) {
+			startWork();
+		}
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		new MenuInflater(this).inflate(R.menu.option, menu);
 		return super.onCreateOptionsMenu(menu);
@@ -70,10 +89,7 @@ public class LunchListActivity extends TabActivity {
 			return true;
 		}
 		else if (item.getItemId() == R.id.run) {
-			setProgressBarVisibility(true);
-			progress = 0;
-			new Thread(longTask).start();
-
+			startWork();
 			return true;
 		}
 
@@ -210,17 +226,25 @@ public class LunchListActivity extends TabActivity {
 
 	private Runnable longTask = new Runnable() {
 		public void run() {
-			for (int i = 0; i < 20; i++) {
-				doSomeLongWork(500);
+			for (int i = progress; i < 10000 && isActive.get(); i += 200) {
+				doSomeLongWork(200);
 			}
-			
-			runOnUiThread(new Runnable() {
-				public void run() {
-					setProgressBarVisibility(false);
-				}
-			});
+
+			if (isActive.get()) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						setProgressBarVisibility(false);
+						progress = 0;
+					}
+				});
+			}
 		}
 	};
+
+	private void startWork() {
+		setProgressBarVisibility(true);
+		new Thread(longTask).start();
+	}
 
 	public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
 		RestaurantAdapter() {
