@@ -70,20 +70,36 @@ public class LunchListActivity extends TabActivity {
 	@Override
 	public void onPause() {
 		super.onPause();
-		isActive.set(false);
+		//isActive.set(false);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 
+		/*isActive.set(true);
+
+		if (progress > 0) {
+			startWork();
+		}*/
+	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		isActive.set(false);
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
 		isActive.set(true);
 
 		if (progress > 0) {
 			startWork();
 		}
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		new MenuInflater(this).inflate(R.menu.option, menu);
