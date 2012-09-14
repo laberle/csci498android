@@ -57,6 +57,14 @@ public class LunchListActivity extends TabActivity {
 		configureRestaurantList();
 		configureAddressField();
 		configureTabs();
+		
+		checkForBackgroundWorkRestart(savedInstanceState);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle bundle) {
+		super.onSaveInstanceState(bundle);
+		bundle.putInt("progress", progress);
 	}
 
 	@Override
@@ -241,6 +249,15 @@ public class LunchListActivity extends TabActivity {
 		}
 	};
 
+	private void checkForBackgroundWorkRestart(Bundle savedInstanceState) {
+		if (savedInstanceState != null) {
+			progress = (Integer) savedInstanceState.get("progress");
+			if (progress > 0) {
+				startWork();
+			}
+		}
+	}
+	
 	private void startWork() {
 		setProgressBarVisibility(true);
 		new Thread(longTask).start();
