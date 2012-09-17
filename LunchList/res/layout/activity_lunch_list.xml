@@ -87,7 +87,7 @@
                     <TableRow>
 
                         <TextView
-                            android:text="@string/dateLastVisit"
+                            android:text="@string/date_last_visit"
                             android:textStyle="bold" />
 
                         <HorizontalScrollView
