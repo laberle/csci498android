@@ -23,7 +23,7 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 				"address TEXT," +
 				"type TEXT," +
 				"notes TEXT," +
-				"last_visit STRING);");
+				"date TEXT);");
 	}
 	
 	@Override
@@ -32,20 +32,21 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 	}
 	
 	public void insert(String name, String address, String type, String notes, String date) {
+		
 		ContentValues cv = new ContentValues();
 		
 		cv.put("name", name);
 		cv.put("address", address);
 		cv.put("type", type);
 		cv.put("notes", notes);
-		cv.put("last_visit", date);
+		cv.put("date", date);
 		
 		getWritableDatabase().insert("restaurants", "name", cv);
 	}
 	
 	public Cursor getAll() {
 		return getReadableDatabase()
-			.rawQuery("SELECT _id, name, address, type, notes, last_visit" +
+			.rawQuery("SELECT _id, name, address, type, notes, date " +
 					"FROM restaurants " +
 					"ORDER BY name",
 					null);
@@ -63,7 +64,7 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 	public String getNotes(Cursor c) {
 		return c.getString(4);
 	}
-	public String getLastVisit(Cursor c) {
+	public String getDate(Cursor c) {
 		return c.getString(5);
 	}
 	

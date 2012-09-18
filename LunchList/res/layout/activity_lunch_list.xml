@@ -55,7 +55,7 @@
                             android:text="@string/address"
                             android:textStyle="bold" />
 
-                        <AutoCompleteTextView
+                        <EditText
                             android:id="@+id/addr"
                             android:inputType="text"
                             android:textColor="#2087DE" />
