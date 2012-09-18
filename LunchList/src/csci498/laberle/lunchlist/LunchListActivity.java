@@ -138,7 +138,9 @@ public class LunchListActivity extends TabActivity {
 				address.getText().toString(),
 				typeString,
 				notes.getText().toString(),
-				dateString);				
+				dateString);	
+			
+			model.requery();
 		}
 	};
 
