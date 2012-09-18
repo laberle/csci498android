@@ -3,6 +3,7 @@ package csci498.laberle.lunchlist;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -57,6 +58,32 @@ public class LunchListActivity extends TabActivity {
 		configureRestaurantList();
 		configureAddressField();
 		configureTabs();
+		
+		if (savedInstanceState != null) {
+			name.setText(savedInstanceState.get("name").toString());
+			address.setText(savedInstanceState.get("address").toString());
+			
+			int type = (Integer) savedInstanceState.get("type");
+			if (type == RestaurantType.SIT_DOWN.getIndex()) {
+				types.check(R.id.sit_down);
+			}
+			else if (type == RestaurantType.TAKE_OUT.getIndex()) {
+				types.check(R.id.take_out);
+			}
+			else if (type == RestaurantType.DELIVERY.getIndex()) {
+				types.check(R.id.delivery);
+			}
+			
+			GregorianCalendar c = (GregorianCalendar) GregorianCalendar.getInstance();
+			String date = (String) savedInstanceState.get("date");
+			String[] dateString = date.split(" ");
+			c.set(Integer.parseInt(dateString[0]), 
+				Integer.parseInt(dateString[1]),
+				Integer.parseInt(dateString[2]));
+			datePicker.init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), null);
+			
+			notes.setText(savedInstanceState.get("notes").toString());
+		}
 	}
 
 	@Override
@@ -74,6 +101,19 @@ public class LunchListActivity extends TabActivity {
 		if (progress > 0) {
 			startWork();
 		}
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle bundle) {
+		super.onSaveInstanceState(bundle);
+		String dateString =  ((Integer) datePicker.getYear()).toString()
+			+ " " + ((Integer) datePicker.getMonth()).toString()
+			+ " " + ((Integer) datePicker.getDayOfMonth()).toString();
+		bundle.putString("name", name.getText().toString());
+		bundle.putString("address", address.getText().toString());
+		bundle.putInt("type", getTypeFromRadioButtons(types).getIndex());
+		bundle.putString("date", dateString);	
+		bundle.putString("notes", notes.getText().toString());
 	}
 
 	@Override
