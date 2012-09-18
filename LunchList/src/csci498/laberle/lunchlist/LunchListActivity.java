@@ -27,6 +27,7 @@ import android.widget.RadioGroup;
 public class LunchListActivity extends TabActivity {
 
 	List<Restaurant> restaurants = new ArrayList<Restaurant>();
+	RestaurantHelper helper;
 	Restaurant current;
 	RestaurantAdapter adapter;
 	ArrayAdapter<String> addressAdapter;
@@ -48,6 +49,13 @@ public class LunchListActivity extends TabActivity {
 		configureAddressField();
 		configureTabs();
 	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		
+		helper.close();
+	}
 
 	private void initializeMembers() {
 		name = (EditText) findViewById(R.id.name);
@@ -55,6 +63,8 @@ public class LunchListActivity extends TabActivity {
 		types = (RadioGroup) findViewById(R.id.types);
 		datePicker = (DatePicker) findViewById(R.id.date);
 		notes = (EditText) findViewById(R.id.notes);
+		
+		helper = new RestaurantHelper(this);
 	}
 
 	private void configureTabs() {
@@ -127,18 +137,19 @@ public class LunchListActivity extends TabActivity {
 	private View.OnClickListener onSave = new OnClickListener() {
 
 		public void onClick(View v) {
-			current = new Restaurant();
 
-			current.setName(name.getText().toString());
-			current.setAddress(address.getText().toString());
-			current.setType(getTypeFromRadioButtons(types));
-			Calendar c = Calendar.getInstance();
-			c.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
-			current.setDate(c);
-			current.setNotes(notes.getText().toString());
-
-			adapter.add(current);
-			addressAdapter.add(current.getAddress());
+			addressAdapter.add(address.getText().toString());
+			
+			String typeString = getTypeFromRadioButtons(types).toString();
+			String dateString =  ((Integer) datePicker.getYear()).toString()
+				+ " " + ((Integer) datePicker.getMonth()).toString()
+				+ " " + ((Integer) datePicker.getDayOfMonth()).toString();
+			
+			helper.insert(name.getText().toString(),
+				address.getText().toString(),
+				typeString,
+				notes.getText().toString(),
+				dateString);				
 		}
 	};
 
