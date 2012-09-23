@@ -7,6 +7,7 @@ import java.util.GregorianCalendar;
 import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
@@ -93,7 +94,10 @@ public class LunchListActivity extends TabActivity {
 
 		public void onItemClick(AdapterView<?> parent, View view, 
 			int position, long id) {
-			model.moveToPosition(position);
+			
+			Intent i = new Intent(LunchListActivity.this, DetailForm.class);
+			startActivity(i);
+			/*model.moveToPosition(position);
 			name.setText(helper.getName(model));
 			address.setText(helper.getAddress(model));
 			notes.setText(helper.getNotes(model));
@@ -116,7 +120,7 @@ public class LunchListActivity extends TabActivity {
 				types.check(R.drawable.delivery);
 			}
 			
-			getTabHost().setCurrentTab(Tabs.DETAILS.getIndex());
+			getTabHost().setCurrentTab(Tabs.DETAILS.getIndex());*/
 		}
 	};
 
