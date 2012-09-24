@@ -71,6 +71,19 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 				"ORDER BY restaurants.name",
 				null);
 	}
+	
+	public Cursor getById(String id) {
+		String[] args = {id};
+		
+		return getReadableDatabase()
+			.rawQuery("SELECT restaurants._id, restaurants.name, address, " +
+					"restaurant_types.name, notes, date " +
+				"FROM restaurants, restaurant_types " +
+				"WHERE restaurants.restaurant_type_id = restaurant_types._id " +
+				"AND restaurants._id = ? " +
+				"ORDER BY restaurants.name",
+				args);
+	}
 
 	public String getName(Cursor c) {
 		return c.getString(1);

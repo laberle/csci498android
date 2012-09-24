@@ -1,6 +1,10 @@
 package csci498.laberle.lunchlist;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +21,7 @@ public class DetailForm extends Activity {
 	RadioGroup types;
 	DatePicker datePicker;
 	EditText notes;
+	String restaurantId;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -24,7 +29,12 @@ public class DetailForm extends Activity {
 		setContentView(R.layout.detail_form);
 		
 		initializeMembers();
-		configureSaveButton();
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		helper.close();
 	}
 	
 	private void initializeMembers() {
@@ -35,6 +45,12 @@ public class DetailForm extends Activity {
 		notes = (EditText) findViewById(R.id.notes);
 		
 		helper = new RestaurantHelper(this);
+		restaurantId = getIntent().getStringExtra(LunchList.ID_EXTRA);
+		if (restaurantId != null) {
+			load();
+		}
+		
+		configureSaveButton();	
 	}
 	
 	private void configureSaveButton() {
@@ -74,4 +90,36 @@ public class DetailForm extends Activity {
 			return null;
 		}
 	}
+	
+	private void load() {
+		Cursor c = helper.getById(restaurantId);
+		
+		c.moveToFirst();
+		name.setText(helper.getName(c));
+		address.setText(helper.getName(c));
+		notes.setText(helper.getNotes(c));
+		String date = helper.getDate(c);
+		
+		GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
+		String[] dateString = date.split(" ");
+		cal.set(Integer.parseInt(dateString[2]), 
+			Integer.parseInt(dateString[0]),
+			Integer.parseInt(dateString[1]));
+		datePicker.init(cal.get(Calendar.YEAR), 
+			cal.get(Calendar.MONTH), 
+			cal.get(Calendar.DATE), null);
+
+		if (helper.getType(c).equals("sit_down")) {
+			types.check(R.drawable.sit_down);
+		}
+		else if (helper.getType(c).equals("take_out")) {
+			types.check(R.drawable.take_out);
+		}
+		else if (helper.getType(c).equals("delivery")) {
+			types.check(R.drawable.delivery);
+		}
+		
+		c.close();
+	}
+	
 }

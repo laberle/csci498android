@@ -9,14 +9,14 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 @SuppressWarnings("deprecation")
-public class LunchListActivity extends ListActivity {
+public class LunchList extends ListActivity {
 
+	public final static String ID_EXTRA = "csci498.laberle.lunchlist._ID";
 	Cursor model;
 	RestaurantHelper helper;
 	RestaurantAdapter adapter;
@@ -24,11 +24,11 @@ public class LunchListActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_lunch_list);
+		setContentView(R.layout.lunch_list);
 
 		configureList();
 	}
-	
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -43,43 +43,18 @@ public class LunchListActivity extends ListActivity {
 		setListAdapter(adapter);
 	}
 
-	private OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
+	@Override
+	public void onListItemClick(ListView list, View view, 
+		int position, long id) {
 
-		public void onItemClick(AdapterView<?> parent, View view, 
-			int position, long id) {
-			
-			Intent i = new Intent(LunchListActivity.this, DetailForm.class);
-			startActivity(i);
-			/*model.moveToPosition(position);
-			name.setText(helper.getName(model));
-			address.setText(helper.getAddress(model));
-			notes.setText(helper.getNotes(model));
-			
-			String date = helper.getDate(model);
-			GregorianCalendar c = (GregorianCalendar) GregorianCalendar.getInstance();
-			String[] dateString = date.split(" ");
-			c.set(Integer.parseInt(dateString[2]), 
-				Integer.parseInt(dateString[0]),
-				Integer.parseInt(dateString[1]));
-			datePicker.init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), null);
-			
-			if (helper.getType(model).equals("sit_down")) {
-				types.check(R.drawable.sit_down);
-			}
-			else if (helper.getType(model).equals("take_out")) {
-				types.check(R.drawable.take_out);
-			}
-			else if (helper.getType(model).equals("delivery")) {
-				types.check(R.drawable.delivery);
-			}
-			
-			getTabHost().setCurrentTab(Tabs.DETAILS.getIndex());*/
-		}
-	};
+		Intent i = new Intent(LunchList.this, DetailForm.class);
+		i.putExtra(ID_EXTRA, String.valueOf(id));
+		startActivity(i);
+	}
 
 	public class RestaurantAdapter extends CursorAdapter {
 		RestaurantAdapter(Cursor c) {
-			super(LunchListActivity.this, c);
+			super(LunchList.this, c);
 		}
 
 		@Override
@@ -87,7 +62,7 @@ public class LunchListActivity extends ListActivity {
 			RestaurantHolder holder = (RestaurantHolder) row.getTag();
 			holder.populateFrom(c, helper);
 		}
-		
+
 		@Override
 		public View newView(Context ctx, Cursor c, ViewGroup parent) {
 			LayoutInflater inflater = getLayoutInflater();
@@ -116,7 +91,7 @@ public class LunchListActivity extends ListActivity {
 			name.setText(helper.getName(c));
 			address.setText(helper.getAddress(c));
 			date.setText(helper.getDate(c));
-			
+
 			if (helper.getType(c).equals("sit_down")) {
 				icon.setImageResource(R.drawable.sit_down);
 			}
