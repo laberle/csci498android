@@ -1,94 +1,46 @@
 package csci498.laberle.lunchlist;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import android.os.Bundle;
-import android.app.TabActivity;
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TabHost;
 import android.widget.TextView;
-import android.widget.RadioGroup;
 
 @SuppressWarnings("deprecation")
-public class LunchListActivity extends TabActivity {
+public class LunchListActivity extends ListActivity {
 
 	Cursor model;
 	RestaurantHelper helper;
 	RestaurantAdapter adapter;
-	EditText name;
-	EditText address;
-	RadioGroup types;
-	DatePicker datePicker;
-	EditText notes;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lunch_list);
-		
-		initializeMembers();
 
-		configureSaveButton();
-		configureRestaurantList();
-		configureTabs();
+		configureList();
 	}
 	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		
 		helper.close();
 	}
 
-	private void initializeMembers() {
-		name = (EditText) findViewById(R.id.name);
-		address = (EditText) findViewById(R.id.addr);
-		types = (RadioGroup) findViewById(R.id.types);
-		datePicker = (DatePicker) findViewById(R.id.date);
-		notes = (EditText) findViewById(R.id.notes);
-		
+	private void configureList() {
 		helper = new RestaurantHelper(this);
-	}
-
-	private void configureTabs() {
-		TabHost.TabSpec spec = getTabHost().newTabSpec("tag1");
-		spec.setContent(R.id.restaurants);
-		spec.setIndicator("List", getResources()
-			.getDrawable(R.drawable.list));
-		getTabHost().addTab(spec);
-		spec = getTabHost().newTabSpec("tag2");
-		spec.setContent(R.id.details);
-		spec.setIndicator("Details", getResources()
-			.getDrawable(R.drawable.restaurant));
-		getTabHost().addTab(spec);
-		getTabHost().setCurrentTab(Tabs.LIST.getIndex());
-	}
-
-	private void configureRestaurantList() {
 		model = helper.getAll();
 		startManagingCursor(model);
 		adapter = new RestaurantAdapter(model);
-		
-		ListView list = (ListView) findViewById(R.id.restaurants);
-		list.setAdapter(adapter);
-		list.setOnItemClickListener(onListClick);
+		setListAdapter(adapter);
 	}
 
 	private OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
@@ -124,43 +76,6 @@ public class LunchListActivity extends TabActivity {
 			getTabHost().setCurrentTab(Tabs.DETAILS.getIndex());*/
 		}
 	};
-
-	private void configureSaveButton() {
-		Button save = (Button) findViewById(R.id.save);
-		save.setOnClickListener(onSave);
-	}
-
-	private View.OnClickListener onSave = new OnClickListener() {
-
-		public void onClick(View v) {
-	
-			//TODO: Sanitize database input
-			String dateString =  ((Integer) datePicker.getMonth()).toString()
-				+ " " + ((Integer) datePicker.getDayOfMonth()).toString()
-				+ " " + ((Integer) datePicker.getYear()).toString();
-			
-			helper.insert(name.getText().toString(),
-				address.getText().toString(),
-				getTypeFromRadioButtons(types).getIndex() + 1, //_id offset from getIndex() by 1
-				notes.getText().toString(),
-				dateString);	
-			
-			model.requery();
-		}
-	};
-
-	private RestaurantType getTypeFromRadioButtons(RadioGroup types) {
-		switch (types.getCheckedRadioButtonId()) {
-		case R.id.sit_down:
-			return RestaurantType.SIT_DOWN;
-		case R.id.take_out:
-			return RestaurantType.TAKE_OUT;
-		case R.id.delivery:
-			return RestaurantType.DELIVERY;
-		default:
-			return null;
-		}
-	}
 
 	public class RestaurantAdapter extends CursorAdapter {
 		RestaurantAdapter(Cursor c) {
@@ -213,19 +128,6 @@ public class LunchListActivity extends TabActivity {
 			}
 		}
 
-	}
-
-	private enum Tabs {
-		LIST(0),
-		DETAILS(1);
-
-		private int index;
-		Tabs(int index) {
-			this.index = index;
-		}
-		public int getIndex() {
-			return index;
-		}
 	}
 
 }
