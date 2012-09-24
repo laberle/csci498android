@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -133,14 +134,14 @@ public class LunchListActivity extends TabActivity {
 
 		public void onClick(View v) {
 	
-			String typeString = getTypeFromRadioButtons(types).toString();
+			//TODO: Sanitize database input
 			String dateString =  ((Integer) datePicker.getMonth()).toString()
 				+ " " + ((Integer) datePicker.getDayOfMonth()).toString()
 				+ " " + ((Integer) datePicker.getYear()).toString();
 			
 			helper.insert(name.getText().toString(),
 				address.getText().toString(),
-				typeString,
+				getTypeFromRadioButtons(types).getIndex() + 1, //_id offset from getIndex() by 1
 				notes.getText().toString(),
 				dateString);	
 			
@@ -199,9 +200,6 @@ public class LunchListActivity extends TabActivity {
 		void populateFrom(Cursor c, RestaurantHelper helper) {
 			name.setText(helper.getName(c));
 			address.setText(helper.getAddress(c));
-
-			//SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd yyyy");
-			//date.setText(dateFormat.format(helper.getDate(c)));
 			date.setText(helper.getDate(c));
 			
 			if (helper.getType(c).equals("sit_down")) {
