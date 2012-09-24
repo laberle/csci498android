@@ -47,7 +47,8 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 		// Intentionally left blank - need 2nd schema before this will be called
 	}
 
-	public void insert(String name, String address, int typeId, String notes, String date) {
+	public void insert(String name, String address,
+		int typeId, String notes, String date) {
 
 		ContentValues cv = new ContentValues();
 
@@ -59,6 +60,23 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 
 		if (cv.size() > 0) {
 			getWritableDatabase().insert("restaurants", null, cv);
+		}
+	}
+	
+	public void update(String id, String name, String address, 
+		int typeId, String notes, String date) {
+
+		ContentValues cv = new ContentValues();
+		String[] args = {id};
+
+		cv.put("name", name);
+		cv.put("address", address);
+		cv.put("restaurant_type_id", typeId);
+		cv.put("notes", notes);
+		cv.put("date", date);
+
+		if (cv.size() > 0) {
+			getWritableDatabase().update("restaurants", cv, "_id=?", args);
 		}
 	}
 
