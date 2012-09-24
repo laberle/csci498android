@@ -18,5 +18,6 @@
     <string name="notes">Notes:</string>
     <string name="run_long_task">Run Long Task</string>
     <string name="click_menu">Click the MENU button to add a restaurant!</string>
-
+	<string name="add">Add</string>
+    
 </resources>

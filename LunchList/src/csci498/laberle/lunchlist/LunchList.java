@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -33,6 +36,22 @@ public class LunchList extends ListActivity {
 	public void onDestroy() {
 		super.onDestroy();
 		helper.close();
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		new MenuInflater(this).inflate(R.menu.option, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.add) {
+			startActivity(new Intent(LunchList.this, DetailForm.class));
+			return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void configureList() {
