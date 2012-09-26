@@ -32,7 +32,7 @@ public class LunchList extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lunch_list);
 
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		configurePreferences();
 		configureList();
 	}
 
@@ -41,13 +41,13 @@ public class LunchList extends ListActivity {
 		super.onDestroy();
 		helper.close();
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		new MenuInflater(this).inflate(R.menu.option, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.add) {
@@ -58,12 +58,34 @@ public class LunchList extends ListActivity {
 			startActivity(new Intent(this, EditPreferences.class));
 			return true;
 		}
-		
+
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void configurePreferences() {
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		prefs.registerOnSharedPreferenceChangeListener(prefListener);
+	}
+
+	private SharedPreferences.OnSharedPreferenceChangeListener prefListener =
+		new SharedPreferences.OnSharedPreferenceChangeListener() {
+		public void onSharedPreferenceChanged(SharedPreferences sharedPrefs, String key) {
+			if (key.equals("sort_order")) {
+				initList();
+			}
+		}
+	};
+
 	private void configureList() {
 		helper = new RestaurantHelper(this);
+		initList();
+	}
+
+	private void initList() {
+		if (model != null) {
+			stopManagingCursor(model);
+			model.close();
+		}
 		model = helper.getAll(prefs.getString("sort_order", "name"));
 		startManagingCursor(model);
 		adapter = new RestaurantAdapter(model);
