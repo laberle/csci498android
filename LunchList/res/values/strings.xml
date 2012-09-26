@@ -22,4 +22,5 @@
 	<string name="choose_sort_order">Choose a sort order</string>
 	<string name="order_string_uses">Choose the order the list uses</string>
     <string name="sort_order">Sort Order</string>
+    <string name="settings">Settings</string>
 </resources>
