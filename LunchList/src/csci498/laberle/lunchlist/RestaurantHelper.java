@@ -80,13 +80,13 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 		}
 	}
 
-	public Cursor getAll() {
+	public Cursor getAll(String orderBy) {
 		return getReadableDatabase()
-			.rawQuery("SELECT restaurants._id, restaurants.name, address, " +
+			.rawQuery("SELECT restaurants._id, restaurants.name as name, address, " +
 					"restaurant_types.name, notes, date " +
 				"FROM restaurants, restaurant_types " +
 				"WHERE restaurants.restaurant_type_id = restaurant_types._id " +
-				"ORDER BY restaurants.name",
+				"ORDER BY " + orderBy,
 				null);
 	}
 	

@@ -1,9 +1,11 @@
 package csci498.laberle.lunchlist;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
@@ -23,12 +25,14 @@ public class LunchList extends ListActivity {
 	Cursor model;
 	RestaurantHelper helper;
 	RestaurantAdapter adapter;
+	SharedPreferences prefs;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lunch_list);
 
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		configureList();
 	}
 
@@ -60,7 +64,7 @@ public class LunchList extends ListActivity {
 
 	private void configureList() {
 		helper = new RestaurantHelper(this);
-		model = helper.getAll();
+		model = helper.getAll(prefs.getString("sort_order", "name"));
 		startManagingCursor(model);
 		adapter = new RestaurantAdapter(model);
 		setListAdapter(adapter);

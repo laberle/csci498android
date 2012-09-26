@@ -11,7 +11,7 @@
     <string-array name="sort_clauses">
         <item>name ASC</item>
         <item>name DESC</item>
-        <item>type, name ASC</item>
+        <item>restaurant_types.name, name ASC</item>
         <item>address ASC</item>
         <item>address DESC</item>
     </string-array>
