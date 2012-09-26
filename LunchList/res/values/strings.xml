@@ -19,5 +19,7 @@
     <string name="run_long_task">Run Long Task</string>
     <string name="click_menu">Click the MENU button to add a restaurant!</string>
 	<string name="add">Add</string>
-    
+	<string name="choose_sort_order">Choose a sort order</string>
+	<string name="order_string_uses">Choose the order the list uses</string>
+    <string name="sort_order">Sort Order</string>
 </resources>
