@@ -18,9 +18,10 @@ public class DetailForm extends Activity {
 	RestaurantHelper helper;
 	EditText name;
 	EditText address;
+	EditText feed;
+	EditText notes;
 	RadioGroup types;
 	DatePicker datePicker;
-	EditText notes;
 	String restaurantId;
 
 	@Override
@@ -79,6 +80,7 @@ public class DetailForm extends Activity {
 		types = (RadioGroup) findViewById(R.id.types);
 		datePicker = (DatePicker) findViewById(R.id.date);
 		notes = (EditText) findViewById(R.id.notes);
+		feed = (EditText) findViewById(R.id.feed);
 
 		helper = new RestaurantHelper(this);
 		restaurantId = getIntent().getStringExtra(LunchList.ID_EXTRA);
@@ -108,7 +110,8 @@ public class DetailForm extends Activity {
 					address.getText().toString(),
 					getTypeFromRadioButtons(types).getIndex() + 1, //_id offset from getIndex() by 1
 					notes.getText().toString(),
-					dateString);	
+					dateString,
+					feed.getText().toString());	
 			}
 			else {
 				helper.update(restaurantId,
@@ -116,7 +119,8 @@ public class DetailForm extends Activity {
 					address.getText().toString(),
 					getTypeFromRadioButtons(types).getIndex() + 1, //_id offset from getIndex() by 1
 					notes.getText().toString(),
-					dateString);
+					dateString,
+					feed.getText().toString());
 			}
 
 			finish();
@@ -143,8 +147,9 @@ public class DetailForm extends Activity {
 		name.setText(helper.getName(c));
 		address.setText(helper.getAddress(c));
 		notes.setText(helper.getNotes(c));
+		feed.setText(helper.getFeed(c));
 		String date = helper.getDate(c);
-
+		
 		GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
 		String[] dateString = date.split(" ");
 		cal.set(Integer.parseInt(dateString[2]), 

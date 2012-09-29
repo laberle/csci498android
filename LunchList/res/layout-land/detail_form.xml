@@ -19,6 +19,7 @@
 
             <EditText
                 android:id="@+id/name"
+                android:layout_span="2"
                 android:inputType="text"
                 android:textColor="#2087DE" />
         </TableRow>
@@ -31,6 +32,7 @@
 
             <EditText
                 android:id="@+id/addr"
+                android:layout_span="2"
                 android:inputType="text"
                 android:textColor="#2087DE" />
         </TableRow>
@@ -75,25 +77,21 @@
             </HorizontalScrollView>
         </TableRow>
 
-        <TableRow>
+        <EditText
+            android:id="@+id/notes"
+            android:gravity="top"
+            android:hint="@string/notes"
+            android:inputType="textMultiLine"
+            android:lines="2"
+            android:maxLines="2"
+            android:scrollHorizontally="false" />
 
-            <TextView android:text="@string/notes" />
-
-            <EditText
-                android:id="@+id/notes"
-                android:gravity="top"
-                android:inputType="text"
-                android:lines="2"
-                android:maxLines="2"
-                android:maxWidth="200sp"
-                android:scrollHorizontally="false"
-                android:singleLine="false" />
-        </TableRow>
+        <EditText
+            android:id="@+id/feed"
+            android:hint="@string/feed_url" />
 
         <Button
             android:id="@+id/save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="@string/save" />
     </TableLayout>
 
