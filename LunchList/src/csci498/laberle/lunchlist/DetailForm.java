@@ -4,16 +4,21 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 public class DetailForm extends Activity {
 
@@ -34,7 +39,12 @@ public class DetailForm extends Activity {
 		initializeMembers();
 	}
 
-
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		helper.close();
+	}
+	
 	@Override
 	public void onSaveInstanceState(Bundle state) {
 		super.onSaveInstanceState(state);
@@ -77,9 +87,27 @@ public class DetailForm extends Activity {
 	}
 
 	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		helper.close();
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.feed) {
+			if (isNetworkAvailable()) {
+				Intent i = new Intent(this, FeedActivity.class);
+				i.putExtra(FeedActivity.FEED_URL, feed.getText().toString());
+				startActivity(i);
+			}
+			else {
+				Toast.makeText(this, "Sorry, the Internet is not available", 
+					Toast.LENGTH_LONG)
+					.show();
+			}
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private boolean isNetworkAvailable() {
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+		NetworkInfo info = cm.getActiveNetworkInfo();
+		return (info != null);
 	}
 
 	private void initializeMembers() {
