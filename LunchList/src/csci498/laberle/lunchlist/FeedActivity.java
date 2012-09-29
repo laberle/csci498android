@@ -4,6 +4,8 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.mcsoxford.rss.RSSFeed;
+import org.mcsoxford.rss.RSSReader;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -16,39 +18,44 @@ public class FeedActivity extends ListActivity {
 	private void goBlooey(Throwable t) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Exception!")
-			.setMessage(t.toString())
-			.setPositiveButton("OK", null)
-			.show();
+		.setMessage(t.toString())
+		.setPositiveButton("OK", null)
+		.show();
 	}
-	
-	private static class FeedTask extends AsyncTask<String, Void, Void> {
+
+	private static class FeedTask extends AsyncTask<String, Void, RSSFeed> {
 		private Exception e;
 		private FeedActivity activity;
+		private RSSReader reader;
 
 		FeedTask(FeedActivity activity) {
 			attach(activity);
 		}
 
+		void attach(FeedActivity activity) {
+			this.activity = activity;
+		}
+		
+		void detach() {
+			activity = null;
+		}
+
 		@Override
-		public Void doInBackground(String... urls) {
+		public RSSFeed doInBackground(String... urls) {
+			RSSFeed result = null;
 			try {
-				DefaultHttpClient client = new DefaultHttpClient();
-				HttpGet getMethod = new HttpGet(urls[0]);
-				ResponseHandler<String> responseHandler = new BasicResponseHandler();
-				String responseBody = client.execute(getMethod, responseHandler);
-				Log.d("Feed Activity", responseBody);
+				result = reader.load(urls[0]);
 			}
 			catch (Exception e) {
 				this.e = e;
 			}
-			
-			return null;
+			return result;
 		}
-		
+
 		@Override 
-		public void onPostExecute(Void unused) {
+		public void onPostExecute(RSSFeed feed) {
 			if (e == null) {
-				//TODO
+				activity.setFeed(feed);
 			}
 			else {
 				Log.e("LunchList", "Exception parsing feed", e);
