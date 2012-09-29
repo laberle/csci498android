@@ -6,6 +6,8 @@ import java.util.GregorianCalendar;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -31,32 +33,32 @@ public class DetailForm extends Activity {
 
 		initializeMembers();
 	}
-	
-	
+
+
 	@Override
 	public void onSaveInstanceState(Bundle state) {
 		super.onSaveInstanceState(state);
-		
+
 		String dateString =  ((Integer) datePicker.getMonth()).toString()
 			+ " " + ((Integer) datePicker.getDayOfMonth()).toString()
 			+ " " + ((Integer) datePicker.getYear()).toString();
-		
+
 		state.putString("name", name.getText().toString());
 		state.putString("address", address.getText().toString());
 		state.putString("notes", notes.getText().toString());
 		state.putInt("type", types.getCheckedRadioButtonId());
 		state.putString("date", dateString);
 	}
-	
+
 	@Override
 	public void onRestoreInstanceState(Bundle state) {
 		super.onRestoreInstanceState(state);
-		
+
 		name.setText(state.getString("name"));
 		address.setText(state.getString("address"));
 		notes.setText(state.getString("notes"));
 		types.check(state.getInt("type"));
-		
+
 		String date = state.getString("date");
 		GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
 		String[] dateString = date.split(" ");
@@ -66,6 +68,12 @@ public class DetailForm extends Activity {
 		datePicker.init(cal.get(Calendar.YEAR), 
 			cal.get(Calendar.MONTH), 
 			cal.get(Calendar.DATE), null);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		new MenuInflater(this).inflate(R.menu.details_options, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
@@ -149,7 +157,7 @@ public class DetailForm extends Activity {
 		notes.setText(helper.getNotes(c));
 		feed.setText(helper.getFeed(c));
 		String date = helper.getDate(c);
-		
+
 		GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
 		String[] dateString = date.split(" ");
 		cal.set(Integer.parseInt(dateString[2]), 
