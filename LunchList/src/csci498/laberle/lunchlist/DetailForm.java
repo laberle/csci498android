@@ -91,6 +91,15 @@ public class DetailForm extends Activity {
 		new MenuInflater(this).inflate(R.menu.details_options, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (restaurantId == null) {
+			menu.findItem(R.id.location).setEnabled(false);
+		}
+		
+		return super.onPrepareOptionsMenu(menu);
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
