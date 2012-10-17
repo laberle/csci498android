@@ -75,6 +75,15 @@
             </HorizontalScrollView>
         </TableRow>
 
+        <TableRow>
+
+            <TextView android:text="@string/location" />
+
+            <TextView
+                android:id="@+id/location"
+                android:text="@string/not_set" />
+        </TableRow>
+
         <EditText
             android:id="@+id/notes"
             android:gravity="top"
@@ -87,12 +96,6 @@
         <EditText
             android:id="@+id/feed"
             android:hint="@string/feed_url" />
-
-        <Button
-            android:id="@+id/save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/save" />
     </TableLayout>
 
 </ScrollView>

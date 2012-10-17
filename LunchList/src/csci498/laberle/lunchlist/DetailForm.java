@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class DetailForm extends Activity {
@@ -26,6 +27,7 @@ public class DetailForm extends Activity {
 	EditText address;
 	EditText feed;
 	EditText notes;
+	TextView location;
 	RadioGroup types;
 	DatePicker datePicker;
 	String restaurantId;
@@ -75,14 +77,7 @@ public class DetailForm extends Activity {
 		types.check(state.getInt("type"));
 
 		String date = state.getString("date");
-		GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
-		String[] dateString = date.split(" ");
-		cal.set(Integer.parseInt(dateString[2]), 
-			Integer.parseInt(dateString[0]),
-			Integer.parseInt(dateString[1]));
-		datePicker.init(cal.get(Calendar.YEAR), 
-			cal.get(Calendar.MONTH), 
-			cal.get(Calendar.DATE), null);
+		fillDatePicker(date);
 	}
 
 	@Override
@@ -122,6 +117,7 @@ public class DetailForm extends Activity {
 		datePicker = (DatePicker) findViewById(R.id.date);
 		notes = (EditText) findViewById(R.id.notes);
 		feed = (EditText) findViewById(R.id.feed);
+		location = (TextView) findViewById(R.id.location);
 
 		helper = new RestaurantHelper(this);
 		restaurantId = getIntent().getStringExtra(LunchList.ID_EXTRA);
@@ -180,16 +176,8 @@ public class DetailForm extends Activity {
 		address.setText(helper.getAddress(c));
 		notes.setText(helper.getNotes(c));
 		feed.setText(helper.getFeed(c));
-		String date = helper.getDate(c);
-
-		GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
-		String[] dateString = date.split(" ");
-		cal.set(Integer.parseInt(dateString[2]), 
-			Integer.parseInt(dateString[0]),
-			Integer.parseInt(dateString[1]));
-		datePicker.init(cal.get(Calendar.YEAR), 
-			cal.get(Calendar.MONTH), 
-			cal.get(Calendar.DATE), null);
+		location.setText(getLocationStringFromCursor(c));
+		fillDatePicker(helper.getDate(c));
 
 		if (helper.getType(c).equals("sit_down")) {
 			types.check(R.id.sit_down);
@@ -202,6 +190,22 @@ public class DetailForm extends Activity {
 		}
 
 		c.close();
+	}
+
+	private void fillDatePicker(String date) {
+		GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
+		String[] dateString = date.split(" ");
+		cal.set(Integer.parseInt(dateString[2]), 
+			Integer.parseInt(dateString[0]),
+			Integer.parseInt(dateString[1]));
+		datePicker.init(cal.get(Calendar.YEAR), 
+			cal.get(Calendar.MONTH), 
+			cal.get(Calendar.DATE), null);
+	}
+
+	private String getLocationStringFromCursor(Cursor c) {
+		return String.valueOf(helper.getLatitude(c)) + ", " 
+			 + String.valueOf(helper.getLongitude(c));
 	}
 
 }
