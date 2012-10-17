@@ -14,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -45,6 +44,12 @@ public class DetailForm extends Activity {
 		helper.close();
 	}
 	
+	@Override
+	public void onPause() {
+		save();
+		super.onPause();
+	}
+
 	@Override
 	public void onSaveInstanceState(Bundle state) {
 		super.onSaveInstanceState(state);
@@ -123,19 +128,11 @@ public class DetailForm extends Activity {
 		if (restaurantId != null) {
 			load();
 		}
-
-		configureSaveButton();	
 	}
 
-	private void configureSaveButton() {
-		Button save = (Button) findViewById(R.id.save);
-		save.setOnClickListener(onSave);
-	}
+	private void save() {
 
-	private View.OnClickListener onSave = new OnClickListener() {
-
-		public void onClick(View v) {
-
+		if (name.getText().toString().length() > 0) {
 			RestaurantType type = getTypeFromRadioButtons(types);
 			String dateString =  ((Integer) datePicker.getMonth()).toString()
 				+ " " + ((Integer) datePicker.getDayOfMonth()).toString()
@@ -158,10 +155,9 @@ public class DetailForm extends Activity {
 					dateString,
 					feed.getText().toString());
 			}
-
-			finish();
 		}
-	};
+
+	}
 
 	private RestaurantType getTypeFromRadioButtons(RadioGroup types) {
 		switch (types.getCheckedRadioButtonId()) {
