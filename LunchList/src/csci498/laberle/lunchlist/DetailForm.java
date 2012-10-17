@@ -6,6 +6,9 @@ import java.util.GregorianCalendar;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -23,6 +26,7 @@ import android.widget.Toast;
 public class DetailForm extends Activity {
 
 	RestaurantHelper helper;
+	LocationManager locationManager;
 	EditText name;
 	EditText address;
 	EditText feed;
@@ -49,6 +53,8 @@ public class DetailForm extends Activity {
 	@Override
 	public void onPause() {
 		save();
+		locationManager.removeUpdates(onLocationChange);
+		
 		super.onPause();
 	}
 
@@ -101,8 +107,39 @@ public class DetailForm extends Activity {
 			}
 			return true;
 		}
+		
+		else if (item.getItemId() == R.id.location) {
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, onLocationChange);
+			return true;
+		}
+		
 		return super.onOptionsItemSelected(item);
 	}
+	
+	LocationListener onLocationChange = new LocationListener() {
+		
+		public void onLocationChanged(Location fix) {
+			helper.updateLocation(restaurantId, fix.getLatitude(), fix.getLongitude());
+			location.setText(String.valueOf(fix.getLatitude()+ ", " + fix.getLongitude()));
+			locationManager.removeUpdates(onLocationChange);
+			
+			Toast.makeText(DetailForm.this, "Location saved", Toast.LENGTH_LONG)
+				.show();
+		}
+		
+		public void onProviderDisabled(String provider) {
+			//Required for interface, not used
+		}
+		
+		public void onProviderEnabled(String provider) {
+			//Required for interface, not used
+		}
+		
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+			//Required for interface, not used
+		}
+		
+	};
 
 	private boolean isNetworkAvailable() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
@@ -119,6 +156,8 @@ public class DetailForm extends Activity {
 		feed = (EditText) findViewById(R.id.feed);
 		location = (TextView) findViewById(R.id.location);
 
+		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+		
 		helper = new RestaurantHelper(this);
 		restaurantId = getIntent().getStringExtra(LunchList.ID_EXTRA);
 		if (restaurantId != null) {
