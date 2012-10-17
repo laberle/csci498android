@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class RestaurantHelper extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = "lunchlist.db";
-	private static final int SCHEMA_VERSION = 2;
+	private static final int SCHEMA_VERSION = 3;
 
 	public RestaurantHelper(Context context) {
 		super(context, DATABASE_NAME, null, SCHEMA_VERSION);
@@ -24,7 +24,9 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 			"restaurant_type_id INTEGER," +
 			"notes TEXT," +
 			"date TEXT," +
-			"feed TEXT);");
+			"feed TEXT," +
+			"latitude REAL," +
+			"longitude REAL);");
 		db.execSQL("CREATE TABLE restaurant_types (" +
 			"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 			"name TEXT);");
@@ -45,7 +47,14 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL("ALTER TABLE restaurants ADD COLUMN feed TEXT");
+		if (oldVersion < 2) {
+			db.execSQL("ALTER TABLE restaurants ADD COLUMN feed TEXT");
+		}
+		
+		if (oldVersion < 3) {
+			db.execSQL("ALTER TABLE restaurants ADD COLUMN latitude REAL");
+			db.execSQL("ALTER TABLE restaurants ADD COLUMN longitude REAL");
+		}
 	}
 
 	public void insert(String name, String address,
@@ -82,11 +91,23 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 			getWritableDatabase().update("restaurants", cv, "_id=?", args);
 		}
 	}
+	
+	public void updateLocation(String id, double lat, double lon) {
+		ContentValues cv = new ContentValues();
+		String[] args = {id};
+		
+		cv.put("latitude", lat);
+		cv.put("longitude", lon);
+		
+		if (cv.size() > 0) {
+			getWritableDatabase().update("restaurants", cv, "_id=?", args);
+		}
+	}
 
 	public Cursor getAll(String orderBy) {
 		return getReadableDatabase()
 			.rawQuery("SELECT restaurants._id, restaurants.name as name, address, " +
-					"restaurant_types.name, notes, date, feed " +
+					"restaurant_types.name, notes, date, feed, latitude, longitude " +
 				"FROM restaurants, restaurant_types " +
 				"WHERE restaurants.restaurant_type_id = restaurant_types._id " +
 				"ORDER BY " + orderBy,
@@ -98,7 +119,7 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 		
 		return getReadableDatabase()
 			.rawQuery("SELECT restaurants._id, restaurants.name, address, " +
-					"restaurant_types.name, notes, date, feed " +
+					"restaurant_types.name, notes, date, feed, latitude, longitude " +
 				"FROM restaurants, restaurant_types " +
 				"WHERE restaurants.restaurant_type_id = restaurant_types._id " +
 				"AND restaurants._id = ? " +
@@ -123,6 +144,12 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 	}
 	public String getFeed(Cursor c) {
 		return c.getString(6);
+	}
+	public double getLatitude(Cursor c) {
+		return c.getDouble(7);
+	}
+	public double getLongitude(Cursor c) {
+		return c.getDouble(8);
 	}
 
 }
