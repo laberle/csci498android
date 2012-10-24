@@ -27,5 +27,6 @@
     <string name="feed_url">Feed URL</string>
     <string name="rss_feed">RSS Feed</string>
     <string name="not_set">(Not Set)</string>
+    <string name="show_on_map">Show on Map</string>
 
 </resources>
