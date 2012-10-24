@@ -15,8 +15,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -123,6 +121,12 @@ public class DetailForm extends Activity {
 			return true;
 		}
 		
+		else if (item.getItemId() == R.id.map) {
+			Intent i = new Intent(this, RestaurantMap.class);
+			startActivity(i);
+			return true;
+		}
+		
 		return super.onOptionsItemSelected(item);
 	}
 	
@@ -178,7 +182,6 @@ public class DetailForm extends Activity {
 	private void save() {
 
 		if (name.getText().toString().length() > 0) {
-			RestaurantType type = getTypeFromRadioButtons(types);
 			String dateString =  ((Integer) datePicker.getMonth()).toString()
 				+ " " + ((Integer) datePicker.getDayOfMonth()).toString()
 				+ " " + ((Integer) datePicker.getYear()).toString();
