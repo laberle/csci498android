@@ -25,6 +25,9 @@ public class DetailForm extends Activity {
 
 	RestaurantHelper helper;
 	LocationManager locationManager;
+	double latitude;
+	double longitude;
+	
 	EditText name;
 	EditText address;
 	EditText feed;
@@ -123,6 +126,10 @@ public class DetailForm extends Activity {
 		
 		else if (item.getItemId() == R.id.map) {
 			Intent i = new Intent(this, RestaurantMap.class);
+			i.putExtra(RestaurantMap.EXTRA_LATITUDE, latitude);
+			i.putExtra(RestaurantMap.EXTRA_LONGITUDE, longitude);
+			i.putExtra(RestaurantMap.EXTRA_NAME, name.getText().toString());
+			
 			startActivity(i);
 			return true;
 		}
@@ -171,6 +178,8 @@ public class DetailForm extends Activity {
 		location = (TextView) findViewById(R.id.location);
 
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+		latitude = 0.0d;
+		longitude = 0.0d;
 		
 		helper = new RestaurantHelper(this);
 		restaurantId = getIntent().getStringExtra(LunchList.ID_EXTRA);
@@ -241,6 +250,9 @@ public class DetailForm extends Activity {
 			types.check(R.id.delivery);
 		}
 
+		latitude = helper.getLatitude(c);
+		longitude = helper.getLongitude(c);
+		
 		c.close();
 	}
 
