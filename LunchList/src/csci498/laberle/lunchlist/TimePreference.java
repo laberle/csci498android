@@ -60,14 +60,14 @@ public class TimePreference extends DialogPreference {
 	
 	@Override
 	protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
-		String time = null;
+		String time;
 		
 		if (restoreValue) {
 			if (defaultValue == null) {
-				time.getPersistedString("00:00");
+				time = getPersistedString("00:00");
 			}
 			else {
-				time.getPersistedString(defaultValue.toString());
+				time = getPersistedString(defaultValue.toString());
 			}
 		}
 		else {

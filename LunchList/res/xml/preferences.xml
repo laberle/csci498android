@@ -8,4 +8,16 @@
         android:summary="@string/order_string_uses"
         android:title="@string/sort_order" />
 
+    <CheckBoxPreference
+        android:key="alarm"
+        android:summary="@string/alarm_summary"
+        android:title="@string/sound_lunch_alarm" />
+
+    <apt.tutorial.TimePreference
+        android:defaultValue="12:00"
+        android:dependency="alarm"
+        android:key="alarm_time"
+        android:summary="@string/set_alarm_summary"
+        android:title="@string/lunch_alarm_time" />
+
 </PreferenceScreen>

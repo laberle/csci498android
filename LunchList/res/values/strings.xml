@@ -29,5 +29,9 @@
     <string name="not_set">(Not Set)</string>
     <string name="show_on_map">Show on Map</string>
     <string name="api_key">0Y2xsE5alfOTVFtAQvrkkkygoDw5UHQdZWQb5sg</string>
-
+    <string name="sound_lunch_alarm">Sound a Lunch Alarm</string>
+    <string name="alarm_summary">Check if you want to know when it is time for lunch</string>
+	<string name="lunch_alarm_time">Lunch Alarm Time</string>
+	<string name="set_alarm_summary">Set your desired time for the lunch alarm</string>
+    
 </resources>
