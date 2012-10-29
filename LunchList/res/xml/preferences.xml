@@ -13,11 +13,11 @@
         android:summary="@string/alarm_summary"
         android:title="@string/sound_lunch_alarm" />
 
-    <apt.tutorial.TimePreference
+    <csci498.laberle.lunchlist.TimePreference
         android:defaultValue="12:00"
         android:dependency="alarm"
         android:key="alarm_time"
         android:summary="@string/set_alarm_summary"
-        android:title="@string/lunch_alarm_time" />
+        android:title="@string/time_for_lunch" />
 
 </PreferenceScreen>

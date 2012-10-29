@@ -40,6 +40,8 @@
         </activity>
         <activity android:name=".RestaurantMap" >
         </activity>
+        <activity android:name=".AlarmActivity" >
+        </activity>
 
         <service android:name=".FeedService" >
         </service>
@@ -50,6 +52,8 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
+        </receiver>
+        <receiver android:name=".OnAlarmReceiver" >
         </receiver>
     </application>
 
