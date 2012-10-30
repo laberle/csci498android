@@ -34,5 +34,7 @@
 	<string name="lunch_alarm_time">Lunch Alarm Time</string>
 	<string name="set_alarm_summary">Set your desired time for the lunch alarm</string>
 	<string name="time_for_lunch">It\'s time for lunch!</string>
+    <string name="use_notification">Use a Notification</string>
+    <string name="notification_summary">Check if you want a status bar icon at lunchtime, or uncheck for a full-screen notice</string>
     
 </resources>
