@@ -4,16 +4,21 @@ import java.util.Calendar;
 
 public class Restaurant {
 
-	private String address = "";
-	private String name = "";
-	private RestaurantType type = null;
-	private String notes = "";
-	private Calendar date = null;
+	private String address;
+	private String name;
+	private RestaurantType type;
+	private String notes;
+	private Calendar date;
+
+	public Restaurant() {
+		address = "";
+		name = "";
+		notes = "";
+	}
 
 	public String toString() {
 		return getName();
 	}
-
 	public String getAddress() {
 		return address;
 	}
@@ -44,7 +49,5 @@ public class Restaurant {
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
-	
+
 }
-
-

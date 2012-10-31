@@ -48,6 +48,7 @@ public class DetailForm extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		
 		helper.close();
 	}
 	
@@ -189,7 +190,6 @@ public class DetailForm extends Activity {
 	}
 
 	private void save() {
-
 		if (name.getText().toString().length() > 0) {
 			String dateString =  ((Integer) datePicker.getMonth()).toString()
 				+ " " + ((Integer) datePicker.getDayOfMonth()).toString()
@@ -262,6 +262,7 @@ public class DetailForm extends Activity {
 		cal.set(Integer.parseInt(dateString[2]), 
 			Integer.parseInt(dateString[0]),
 			Integer.parseInt(dateString[1]));
+		
 		datePicker.init(cal.get(Calendar.YEAR), 
 			cal.get(Calendar.MONTH), 
 			cal.get(Calendar.DATE), null);

@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-@SuppressWarnings("deprecation")
 public class LunchList extends ListActivity {
 
 	public final static String ID_EXTRA = "csci498.laberle.lunchlist._ID";
@@ -69,11 +68,13 @@ public class LunchList extends ListActivity {
 
 	private SharedPreferences.OnSharedPreferenceChangeListener prefListener =
 		new SharedPreferences.OnSharedPreferenceChangeListener() {
+		
 		public void onSharedPreferenceChanged(SharedPreferences sharedPrefs, String key) {
 			if (key.equals("sort_order")) {
 				initList();
 			}
 		}
+		
 	};
 
 	private void configureList() {
@@ -101,6 +102,7 @@ public class LunchList extends ListActivity {
 		startActivity(i);
 	}
 
+	@SuppressWarnings("deprecation")
 	public class RestaurantAdapter extends CursorAdapter {
 		RestaurantAdapter(Cursor c) {
 			super(LunchList.this, c);
@@ -121,13 +123,15 @@ public class LunchList extends ListActivity {
 			row.setTag(holder);
 			return row;
 		}
+		
 	}
 
 	static class RestaurantHolder {
-		private TextView name = null; 
-		private TextView address = null;
-		private TextView date = null;
-		private ImageView icon = null;
+		
+		private TextView name; 
+		private TextView address;
+		private TextView date;
+		private ImageView icon;
 
 		RestaurantHolder(View row) {
 			name = (TextView) row.findViewById(R.id.title);

@@ -67,12 +67,13 @@ public class FeedActivity extends ListActivity {
 	private void goBlooey(Throwable t) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Exception!")
-		.setMessage(t.toString())
-		.setPositiveButton("OK", null)
-		.show();
+			   .setMessage(t.toString())
+		       .setPositiveButton("OK", null)
+		       .show();
 	}
 
 	private static class FeedHandler extends Handler {
+		
 		private FeedActivity activity;
 
 		FeedHandler(FeedActivity activity) {
@@ -87,7 +88,6 @@ public class FeedActivity extends ListActivity {
 			activity = null;
 		}
 
-
 		@Override 
 		public void handleMessage(Message msg) {
 			if (msg.arg1 == RESULT_OK) {
@@ -100,6 +100,7 @@ public class FeedActivity extends ListActivity {
 	}
 	
 	private class FeedAdapter extends BaseAdapter {
+		
 		RSSFeed feed;
 		
 		FeedAdapter(RSSFeed feed) {
@@ -137,4 +138,5 @@ public class FeedActivity extends ListActivity {
 		RSSFeed feed;
 		FeedHandler handler;
 	}
+	
 }

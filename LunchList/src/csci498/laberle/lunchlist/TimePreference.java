@@ -16,9 +16,9 @@ public class TimePreference extends DialogPreference {
 	
 	public TimePreference(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		
 		lastHour = 0;
 		lastMinute = 0;
-		
 		setPositiveButtonText("Set");
 		setNegativeButtonText("Cancel");
 	}

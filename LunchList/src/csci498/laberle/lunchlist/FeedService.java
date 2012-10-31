@@ -10,7 +10,6 @@ import android.os.Message;
 import android.os.Messenger;
 import android.util.Log;
 
-
 public class FeedService extends IntentService {
 	
 	public static final String EXTRA_URL = "csci498.laberle.lunchlist.EXTRA_URL";

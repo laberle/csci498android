@@ -35,7 +35,6 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 	}
 
 	private void initializeRestaurantTypesTable(SQLiteDatabase db) {
-		
 		ContentValues cv = new ContentValues();
 		cv.put("name", "sit_down");
 		db.insert("restaurant_types", null, cv);
@@ -61,7 +60,7 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 		int typeId, String notes, String date, String feed) {
 
 		ContentValues cv = new ContentValues();
-
+		
 		cv.put("name", name);
 		cv.put("address", address);
 		cv.put("restaurant_type_id", typeId);
@@ -107,11 +106,11 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 	public Cursor getAll(String orderBy) {
 		return getReadableDatabase()
 			.rawQuery("SELECT restaurants._id, restaurants.name as name, address, " +
-					"restaurant_types.name, notes, date, feed, latitude, longitude " +
-				"FROM restaurants, restaurant_types " +
-				"WHERE restaurants.restaurant_type_id = restaurant_types._id " +
-				"ORDER BY " + orderBy,
-				null);
+					  "restaurant_types.name, notes, date, feed, latitude, longitude " +
+					  "FROM restaurants, restaurant_types " +
+					  "WHERE restaurants.restaurant_type_id = restaurant_types._id " +
+					  "ORDER BY " + orderBy, 
+					  null);
 	}
 	
 	public Cursor getById(String id) {
@@ -119,12 +118,12 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 		
 		return getReadableDatabase()
 			.rawQuery("SELECT restaurants._id, restaurants.name, address, " +
-					"restaurant_types.name, notes, date, feed, latitude, longitude " +
-				"FROM restaurants, restaurant_types " +
-				"WHERE restaurants.restaurant_type_id = restaurant_types._id " +
-				"AND restaurants._id = ? " +
-				"ORDER BY restaurants.name",
-				args);
+					  "restaurant_types.name, notes, date, feed, latitude, longitude " +
+					  "FROM restaurants, restaurant_types " +
+					  "WHERE restaurants.restaurant_type_id = restaurant_types._id " +
+					  "AND restaurants._id = ? " +
+					  "ORDER BY restaurants.name",
+					  args);
 	}
 
 	public String getName(Cursor c) {

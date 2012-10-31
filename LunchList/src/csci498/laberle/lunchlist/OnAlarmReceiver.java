@@ -23,10 +23,14 @@ public class OnAlarmReceiver extends BroadcastReceiver {
 			createNotification(context);
 		}
 		else {
-			Intent i = new Intent(context, AlarmActivity.class);
-			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			context.startActivity(i);
+			startAlarmActivity(context);
 		}
+	}
+
+	private void startAlarmActivity(Context context) {
+		Intent i = new Intent(context, AlarmActivity.class);
+		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(i);
 	}
 
 	private void createNotification(Context context) {
@@ -37,8 +41,8 @@ public class OnAlarmReceiver extends BroadcastReceiver {
 		PendingIntent i = PendingIntent.getActivity(context, 0, 
 			new Intent(context, AlarmActivity.class), 0);
 
-		note.setLatestEventInfo(context, 
-			"LunchList", "It's time for lunch! Aren't you hungry?", i);
+		note.setLatestEventInfo(context, "LunchList", 
+			"It's time for lunch! Aren't you hungry?", i);
 		note.flags = Notification.FLAG_AUTO_CANCEL;
 		manager.notify(NOTIFY_ME_ID, note);
 	}

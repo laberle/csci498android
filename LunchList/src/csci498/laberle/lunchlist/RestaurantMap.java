@@ -38,8 +38,7 @@ public class RestaurantMap extends MapActivity {
 		
 		Drawable marker = getResources().getDrawable(R.drawable.marker);
 		marker.setBounds(0, 0, marker.getIntrinsicWidth(), marker.getIntrinsicHeight());
-		map.getOverlays()
-		   .add(new RestaurantOverlay(marker, location, getIntent().getStringExtra(EXTRA_NAME)));
+		map.getOverlays().add(new RestaurantOverlay(marker, location, getIntent().getStringExtra(EXTRA_NAME)));
 	}
 	
 	@Override
@@ -53,6 +52,7 @@ public class RestaurantMap extends MapActivity {
 		
 		public RestaurantOverlay(Drawable marker, GeoPoint point, String name) {
 			super(marker);
+			
 			boundCenterBottom(marker);
 			item = new OverlayItem(point, name, name);
 			populate();

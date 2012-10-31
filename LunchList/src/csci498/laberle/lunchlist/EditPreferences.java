@@ -9,12 +9,11 @@ import android.preference.PreferenceManager;
 
 public class EditPreferences extends PreferenceActivity {
 
-	SharedPreferences prefs;
+	private SharedPreferences prefs;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		addPreferencesFromResource(R.xml.preferences);
 	}
 
@@ -38,13 +37,13 @@ public class EditPreferences extends PreferenceActivity {
 
 		public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 
-			if("alarm".equals(key)) {
+			if ("alarm".equals(key)) {
 				boolean enabled = prefs.getBoolean(key, false);
 				int flag = (enabled ?
 					PackageManager.COMPONENT_ENABLED_STATE_ENABLED :
-						PackageManager.COMPONENT_ENABLED_STATE_DISABLED);
+					PackageManager.COMPONENT_ENABLED_STATE_DISABLED);
+				
 				ComponentName component = new ComponentName(EditPreferences.this, OnBootReceiver.class);
-
 				getPackageManager().setComponentEnabledSetting(component, flag, PackageManager.DONT_KILL_APP);
 
 				if (enabled) {
@@ -59,6 +58,6 @@ public class EditPreferences extends PreferenceActivity {
 				OnBootReceiver.setAlarm(EditPreferences.this);
 			}
 		}
-
 	};
+	
 }
