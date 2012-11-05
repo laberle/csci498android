@@ -43,7 +43,7 @@ public class OnAlarmReceiver extends BroadcastReceiver {
 
 		note.setLatestEventInfo(context, "LunchList", 
 			"It's time for lunch! Aren't you hungry?", i);
-		note.flags = Notification.FLAG_AUTO_CANCEL;
+		note.flags |= Notification.FLAG_AUTO_CANCEL;
 		manager.notify(NOTIFY_ME_ID, note);
 	}
 
