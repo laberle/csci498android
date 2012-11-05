@@ -45,6 +45,8 @@
 
         <service android:name=".FeedService" >
         </service>
+        <service android:name=".WidgetService" >
+        </service>
 
         <receiver
             android:name=".OnBootReceiver"
@@ -57,12 +59,14 @@
         </receiver>
         <receiver
             android:name=".AppWidget"
+            android:exported="false"
             android:icon="@drawable/icon"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-            <meta-data
+
+            <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_provider" />
         </receiver>
