@@ -36,5 +36,6 @@
 	<string name="time_for_lunch">It\'s time for lunch!</string>
     <string name="use_notification">Use a Notification</string>
     <string name="notification_summary">Check if you want a status bar icon at lunchtime, or uncheck for a full-screen notice</string>
+    <string name="random_restaurant_icon">Tap to display a random restaurant</string>
     
 </resources>
