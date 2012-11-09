@@ -11,15 +11,6 @@ import android.widget.RemoteViews;
 
 public class WidgetService extends IntentService {
 	
-	private static final String SELECT_ONE_RESTAURANT_NAME = "SELECT _ID, name FROM restaurants LIMIT 1 OFFSET ?";
-	private static final String SELECT_NUMBER_OF_RESTAURANTS = "SELECT COUNT(*) FROM restaurants";
-
-	
-	//TODO: Move appropriate logic to RestaurantHelper
-	
-	
-	
-	
 	public WidgetService() {
 		super("WidgetService");
 	}
@@ -32,32 +23,17 @@ public class WidgetService extends IntentService {
 		AppWidgetManager manager = AppWidgetManager.getInstance(this);
 
 		try {
-			Cursor c = helper
-				.getReadableDatabase()
-				.rawQuery(SELECT_NUMBER_OF_RESTAURANTS, null);
-			c.moveToFirst();
-			int count = c.getInt(0);
-			c.close();
-
-			if (count > 0) {
-				int offset = (int) (count * Math.random());
-				String args[] = {String.valueOf(offset)};
-
-				c = helper
-					.getReadableDatabase()
-					.rawQuery(SELECT_ONE_RESTAURANT_NAME, args);
-				c.moveToFirst();
+			String name = helper.getRandomRestaurantName();
 				
-				updateViews.setTextViewText(R.id.name, c.getString(1));
+			if (name != null) {
+				updateViews.setTextViewText(R.id.name, name);
 				
 				Intent i = new Intent(this, DetailForm.class);
-				i.putExtra(LunchList.ID_EXTRA, c.getString(0));
+				i.putExtra(LunchList.ID_EXTRA, helper.getIdFromRestaurantName(name));
 				PendingIntent pendingIntent = PendingIntent.getActivity(this,
 					0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 				
-				updateViews.setOnClickPendingIntent(R.id.name, pendingIntent);
-				
-				c.close();
+				updateViews.setOnClickPendingIntent(R.id.name, pendingIntent);	
 			}
 			else {
 				updateViews.setTextViewText(R.id.title, this.getString(R.string.empty));

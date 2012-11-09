@@ -117,6 +117,41 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 		return getReadableDatabase().rawQuery("SELECT _ID, name FROM restaurants", null);
 	}
 	
+	public String getRandomRestaurantName() {
+		String name;
+		
+		Cursor c = getReadableDatabase().rawQuery("SELECT COUNT(*) FROM restaurants", null);
+		c.moveToFirst();
+		int count = c.getInt(0);
+		c.close();
+		
+		if (count > 0) {
+		
+			int offset = (int) (count * Math.random());
+			String args[] = {String.valueOf(offset)};
+	
+			c = getReadableDatabase().rawQuery("SELECT _ID, name FROM restaurants LIMIT 1 OFFSET ?", args);
+			c.moveToFirst();
+			c.close();
+			name = getName(c);
+			
+		}
+		else {
+			name = null;
+		}
+		
+		return name;
+	}
+	
+	public String getIdFromRestaurantName(String name) {
+		String args[] = {name};
+		Cursor c = getReadableDatabase().rawQuery("SELECT _ID FROM restaurants WHERE name = ?", args );
+		c.moveToFirst();
+		String id = c.getString(0);
+		c.close();
+		return id;	
+	}
+	
 	public Cursor getById(String id) {
 		String[] args = {id};
 		
