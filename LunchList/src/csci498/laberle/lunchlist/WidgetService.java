@@ -10,14 +10,23 @@ import android.widget.RemoteViews;
 
 
 public class WidgetService extends IntentService {
+	
+	private static final String SELECT_ONE_RESTAURANT_NAME = "SELECT _ID, name FROM restaurants LIMIT 1 OFFSET ?";
+	private static final String SELECT_NUMBER_OF_RESTAURANTS = "SELECT COUNT(*) FROM restaurants";
 
+	
+	//TODO: Move appropriate logic to RestaurantHelper
+	
+	
+	
+	
 	public WidgetService() {
 		super("WidgetService");
 	}
 
 	@Override
 	public void onHandleIntent(Intent intent) {
-		ComponentName componentName = new ComponentName(this, AppWidget.class);
+		ComponentName componentName = new ComponentName(this, LunchListWidget.class);
 		RemoteViews updateViews = new RemoteViews("csci498.laberle.lunchlist", R.layout.widget);
 		RestaurantHelper helper = new RestaurantHelper(this);
 		AppWidgetManager manager = AppWidgetManager.getInstance(this);
@@ -25,7 +34,7 @@ public class WidgetService extends IntentService {
 		try {
 			Cursor c = helper
 				.getReadableDatabase()
-				.rawQuery("SELECT COUNT(*) FROM restaurants", null);
+				.rawQuery(SELECT_NUMBER_OF_RESTAURANTS, null);
 			c.moveToFirst();
 			int count = c.getInt(0);
 			c.close();
@@ -36,7 +45,7 @@ public class WidgetService extends IntentService {
 
 				c = helper
 					.getReadableDatabase()
-					.rawQuery("SELECT _ID, name FROM restaurants LIMIT 1 OFFSET ?", args);
+					.rawQuery(SELECT_ONE_RESTAURANT_NAME, args);
 				c.moveToFirst();
 				
 				updateViews.setTextViewText(R.id.name, c.getString(1));
