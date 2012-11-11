@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.database.Cursor;
 import android.widget.RemoteViews;
 
 
@@ -17,7 +16,7 @@ public class WidgetService extends IntentService {
 
 	@Override
 	public void onHandleIntent(Intent intent) {
-		ComponentName componentName = new ComponentName(this, AppWidget.class);
+		ComponentName componentName = new ComponentName(this, WidgetService.class);
 		RemoteViews widgetViews = new RemoteViews("csci498.laberle.lunchlist", R.layout.widget);
 		RestaurantHelper helper = new RestaurantHelper(this);
 		AppWidgetManager manager = AppWidgetManager.getInstance(this);
@@ -26,7 +25,7 @@ public class WidgetService extends IntentService {
 			String name = helper.getRandomRestaurantName();
 				
 			if (name != null) {
-				widgetViews.setTextViewText(R.id.name, c.getString(1));
+				widgetViews.setTextViewText(R.id.name, name);
 				
 				Intent i = new Intent(this, DetailForm.class);
 				i.putExtra(LunchList.ID_EXTRA, helper.getIdFromRestaurantName(name));
@@ -34,8 +33,6 @@ public class WidgetService extends IntentService {
 					0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 				
 				widgetViews.setOnClickPendingIntent(R.id.name, pendingIntent);
-				
-				c.close();
 			}
 			else {
 				widgetViews.setTextViewText(R.id.title, this.getString(R.string.empty));
