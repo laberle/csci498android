@@ -17,8 +17,8 @@ public class WidgetService extends IntentService {
 
 	@Override
 	public void onHandleIntent(Intent intent) {
-		ComponentName componentName = new ComponentName(this, LunchListWidget.class);
-		RemoteViews updateViews = new RemoteViews("csci498.laberle.lunchlist", R.layout.widget);
+		ComponentName componentName = new ComponentName(this, AppWidget.class);
+		RemoteViews widgetViews = new RemoteViews("csci498.laberle.lunchlist", R.layout.widget);
 		RestaurantHelper helper = new RestaurantHelper(this);
 		AppWidgetManager manager = AppWidgetManager.getInstance(this);
 
@@ -26,17 +26,19 @@ public class WidgetService extends IntentService {
 			String name = helper.getRandomRestaurantName();
 				
 			if (name != null) {
-				updateViews.setTextViewText(R.id.name, name);
+				widgetViews.setTextViewText(R.id.name, c.getString(1));
 				
 				Intent i = new Intent(this, DetailForm.class);
 				i.putExtra(LunchList.ID_EXTRA, helper.getIdFromRestaurantName(name));
 				PendingIntent pendingIntent = PendingIntent.getActivity(this,
 					0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 				
-				updateViews.setOnClickPendingIntent(R.id.name, pendingIntent);	
+				widgetViews.setOnClickPendingIntent(R.id.name, pendingIntent);
+				
+				c.close();
 			}
 			else {
-				updateViews.setTextViewText(R.id.title, this.getString(R.string.empty));
+				widgetViews.setTextViewText(R.id.title, this.getString(R.string.empty));
 			}
 		}
 		finally {
@@ -46,7 +48,7 @@ public class WidgetService extends IntentService {
 		Intent i = new Intent(this, WidgetService.class);
 		PendingIntent pendingIntent = PendingIntent.getService(this, 0, i, 0);
 		
-		updateViews.setOnClickPendingIntent(R.id.next, pendingIntent);
-		manager.updateAppWidget(componentName, updateViews);
+		widgetViews.setOnClickPendingIntent(R.id.next, pendingIntent);
+		manager.updateAppWidget(componentName, widgetViews);
 	}
 }
