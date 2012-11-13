@@ -3,6 +3,8 @@ package csci498.laberle.lunchlist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 public class LunchList extends FragmentActivity implements LunchFragment.OnRestaurantListener {
 
@@ -19,8 +21,31 @@ public class LunchList extends FragmentActivity implements LunchFragment.OnResta
 	}
 
 	public void onRestaurantSelected(long id) {
-		Intent i = new Intent(this, DetailForm.class);
-		i.putExtra(ID_EXTRA, String.valueOf(id));
-		startActivity(i);
+		if (findViewById(R.id.details) == null) {
+			Intent i = new Intent(this, DetailForm.class);
+			i.putExtra(ID_EXTRA, String.valueOf(id));
+			startActivity(i);
+		}
+		else {
+			initializeAndBindDetailFragment(id);
+		}
+	}
+
+	private void initializeAndBindDetailFragment(long id) {
+		FragmentManager fragManager = getSupportFragmentManager();
+		DetailFragment details = (DetailFragment) fragManager.findFragmentById(R.id.details);
+		
+		if (details == null) {
+			details = DetailFragment.newInstance(id);
+			FragmentTransaction xaction = fragManager.beginTransaction();
+			
+			xaction.add(R.id.details, details)
+				   .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+				   .addToBackStack(null)
+				   .commit();
+		}
+		else {
+			details.loadRestaurant(String.valueOf(id));
+		}
 	}
 }
