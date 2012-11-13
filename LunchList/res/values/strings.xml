@@ -38,4 +38,6 @@
     <string name="notification_summary">Check if you want a status bar icon at lunchtime, or uncheck for a full-screen notice</string>
     <string name="random_restaurant_icon">Tap to display a random restaurant</string>
     <string name="empty">No restaurants!</string>
+    <string name="help">Help</string>
+    
 </resources>

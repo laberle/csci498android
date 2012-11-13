@@ -26,14 +26,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class DetailFragment extends Fragment {
-	
+
 	private static final String ARG_REST_ID = "csci498.lunchlist.laberle.ARG_REST_ID";
 
 	RestaurantHelper helper;
 	LocationManager locationManager;
 	double latitude;
 	double longitude;
-	
+
 	EditText name;
 	EditText address;
 	EditText feed;
@@ -46,35 +46,35 @@ public class DetailFragment extends Fragment {
 	public static DetailFragment newInstance(long id) {
 		DetailFragment result = new DetailFragment();
 		Bundle args = new Bundle();
-		
+
 		args.putString(ARG_REST_ID, String.valueOf(id));
 		result.setArguments(args);
 		return result;
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.detail_form, container, false);
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
+
 		initializeMembers();
 	}
-	
+
 	private RestaurantHelper getHelper() {
 		if (helper == null) {
 			helper = new RestaurantHelper(getActivity());
 		}
-		
+
 		return helper;
 	}
 
@@ -83,7 +83,7 @@ public class DetailFragment extends Fragment {
 		save();
 		getHelper().close();
 		locationManager.removeUpdates(onLocationChange);
-		
+
 		super.onPause();
 	}
 
@@ -91,7 +91,7 @@ public class DetailFragment extends Fragment {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.details_options, menu);
 	}
-	
+
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		if (restaurantId == null) {
@@ -115,48 +115,49 @@ public class DetailFragment extends Fragment {
 			}
 			return true;
 		}
-		
 		else if (item.getItemId() == R.id.location) {
 			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, onLocationChange);
 			return true;
 		}
-		
 		else if (item.getItemId() == R.id.map) {
 			Intent i = new Intent(getActivity(), RestaurantMap.class);
 			i.putExtra(RestaurantMap.EXTRA_LATITUDE, latitude);
 			i.putExtra(RestaurantMap.EXTRA_LONGITUDE, longitude);
 			i.putExtra(RestaurantMap.EXTRA_NAME, name.getText().toString());
-			
+
 			startActivity(i);
 			return true;
 		}
-		
+		else if (item.getItemId() == R.id.help) {
+			startActivity(new Intent(getActivity(), HelpPage.class));
+		}
+
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	LocationListener onLocationChange = new LocationListener() {
-		
+
 		public void onLocationChanged(Location fix) {
 			getHelper().updateLocation(restaurantId, fix.getLatitude(), fix.getLongitude());
 			location.setText(String.valueOf(fix.getLatitude()+ ", " + fix.getLongitude()));
 			locationManager.removeUpdates(onLocationChange);
-			
+
 			Toast.makeText(getActivity(), "Location saved", Toast.LENGTH_LONG)
-				.show();
+			.show();
 		}
-		
+
 		public void onProviderDisabled(String provider) {
 			//Required for interface, not used
 		}
-		
+
 		public void onProviderEnabled(String provider) {
 			//Required for interface, not used
 		}
-		
+
 		public void onStatusChanged(String provider, int status, Bundle extras) {
 			//Required for interface, not used
 		}
-		
+
 	};
 
 	private boolean isNetworkAvailable() {
@@ -177,17 +178,17 @@ public class DetailFragment extends Fragment {
 		locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 		latitude = 0.0d;
 		longitude = 0.0d;
-		
+
 		Bundle args = getArguments();
-		
+
 		if (args != null) {
 			loadRestaurant(args.getString(ARG_REST_ID));
 		}
 	}
-	
+
 	public void loadRestaurant(String restaurantId) {
 		this.restaurantId = restaurantId;
-		
+
 		if (restaurantId != null) {
 			load();
 		}
@@ -256,7 +257,7 @@ public class DetailFragment extends Fragment {
 
 		latitude = getHelper().getLatitude(c);
 		longitude = getHelper().getLongitude(c);
-		
+
 		c.close();
 	}
 
@@ -266,7 +267,7 @@ public class DetailFragment extends Fragment {
 		cal.set(Integer.parseInt(dateString[2]), 
 			Integer.parseInt(dateString[0]),
 			Integer.parseInt(dateString[1]));
-		
+
 		datePicker.init(cal.get(Calendar.YEAR), 
 			cal.get(Calendar.MONTH), 
 			cal.get(Calendar.DATE), null);
@@ -274,7 +275,7 @@ public class DetailFragment extends Fragment {
 
 	private String getLocationStringFromCursor(Cursor c) {
 		return String.valueOf(getHelper().getLatitude(c)) + ", " 
-			 + String.valueOf(getHelper().getLongitude(c));
+			+ String.valueOf(getHelper().getLongitude(c));
 	}
 
 }

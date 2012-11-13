@@ -42,6 +42,8 @@
         </activity>
         <activity android:name=".AlarmActivity" >
         </activity>
+        <activity android:name=".HelpPage" >
+        </activity>
 
         <service android:name=".FeedService" >
         </service>
