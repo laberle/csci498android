@@ -38,6 +38,7 @@ public class DetailFragment extends Fragment {
 	EditText address;
 	EditText feed;
 	EditText notes;
+	EditText phone;
 	TextView location;
 	RadioGroup types;
 	DatePicker datePicker;
@@ -169,6 +170,7 @@ public class DetailFragment extends Fragment {
 	private void initializeMembers() {
 		name = (EditText) getView().findViewById(R.id.name);
 		address = (EditText) getView().findViewById(R.id.addr);
+		phone = (EditText) getView().findViewById(R.id.phone);
 		types = (RadioGroup) getView().findViewById(R.id.types);
 		datePicker = (DatePicker) getView().findViewById(R.id.date);
 		notes = (EditText) getView().findViewById(R.id.notes);
@@ -206,7 +208,8 @@ public class DetailFragment extends Fragment {
 					getTypeFromRadioButtons(types).getIndex() + 1, //_id offset from getIndex() by 1
 					notes.getText().toString(),
 					dateString,
-					feed.getText().toString());	
+					feed.getText().toString(),
+					phone.getText().toString());	
 			}
 			else {
 				getHelper().update(restaurantId,
@@ -215,7 +218,8 @@ public class DetailFragment extends Fragment {
 					getTypeFromRadioButtons(types).getIndex() + 1, //_id offset from getIndex() by 1
 					notes.getText().toString(),
 					dateString,
-					feed.getText().toString());
+					feed.getText().toString(),
+					phone.getText().toString());
 			}
 		}
 
@@ -243,6 +247,7 @@ public class DetailFragment extends Fragment {
 		notes.setText(getHelper().getNotes(c));
 		feed.setText(getHelper().getFeed(c));
 		location.setText(getLocationStringFromCursor(c));
+		phone.setText(getHelper().getPhone(c));
 		fillDatePicker(getHelper().getDate(c));
 
 		if (getHelper().getType(c).equals("sit_down")) {

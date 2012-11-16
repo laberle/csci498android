@@ -40,6 +40,18 @@
         <TableRow>
 
             <TextView
+                android:text="@string/phone"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_span="2"
+                android:inputType="phone" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
                 android:text="@string/type"
                 android:textStyle="bold" />
 

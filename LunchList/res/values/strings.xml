@@ -41,5 +41,6 @@
     <string name="help">Help</string>
     <string name="alarm_ringtone">Alarm Ringtone</string>
     <string name="alarm_ringtone_summary">Indicate the ringtone to play when it is lunchtime</string>
-
+	<string name="phone">Phone:</string>
+    
 </resources>
