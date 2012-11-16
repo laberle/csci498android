@@ -31,13 +31,15 @@
     <string name="api_key">0Y2xsE5alfOTVFtAQvrkkkygoDw5UHQdZWQb5sg</string>
     <string name="sound_lunch_alarm">Sound a Lunch Alarm</string>
     <string name="alarm_summary">Check if you want to know when it is time for lunch</string>
-	<string name="lunch_alarm_time">Lunch Alarm Time</string>
-	<string name="set_alarm_summary">Set your desired time for the lunch alarm</string>
-	<string name="time_for_lunch">It\'s time for lunch!</string>
+    <string name="lunch_alarm_time">Lunch Alarm Time</string>
+    <string name="set_alarm_summary">Set your desired time for the lunch alarm</string>
+    <string name="time_for_lunch">It\'s time for lunch!</string>
     <string name="use_notification">Use a Notification</string>
     <string name="notification_summary">Check if you want a status bar icon at lunchtime, or uncheck for a full-screen notice</string>
     <string name="random_restaurant_icon">Tap to display a random restaurant</string>
     <string name="empty">No restaurants!</string>
     <string name="help">Help</string>
-    
+    <string name="alarm_ringtone">Alarm Ringtone</string>
+    <string name="alarm_ringtone_summary">Indicate the ringtone to play when it is lunchtime</string>
+
 </resources>
