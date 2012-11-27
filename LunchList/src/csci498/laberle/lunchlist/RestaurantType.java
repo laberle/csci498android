@@ -15,5 +15,4 @@ public enum RestaurantType {
 	public int getIndex() {
 		return index;
 	}
-	
 }

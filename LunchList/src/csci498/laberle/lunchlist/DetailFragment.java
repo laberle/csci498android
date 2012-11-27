@@ -68,7 +68,6 @@ public class DetailFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
 		initializeMembers();
 	}
 
@@ -76,7 +75,6 @@ public class DetailFragment extends Fragment {
 		if (helper == null) {
 			helper = new RestaurantHelper(getActivity());
 		}
-
 		return helper;
 	}
 
@@ -100,7 +98,6 @@ public class DetailFragment extends Fragment {
 			menu.findItem(R.id.location).setEnabled(false);
 			menu.findItem(R.id.map).setEnabled(false);
 		}
-		
 		if (isTelephonyAvailable()) {
 			menu.findItem(R.id.call).setEnabled(true);
 		}
@@ -255,8 +252,8 @@ public class DetailFragment extends Fragment {
 
 	private void load() {
 		Cursor c = getHelper().getById(restaurantId);
-
 		c.moveToFirst();
+		
 		name.setText(getHelper().getName(c));
 		address.setText(getHelper().getAddress(c));
 		notes.setText(getHelper().getNotes(c));
@@ -285,17 +282,16 @@ public class DetailFragment extends Fragment {
 		GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
 		String[] dateString = date.split(" ");
 		cal.set(Integer.parseInt(dateString[2]), 
-			Integer.parseInt(dateString[0]),
-			Integer.parseInt(dateString[1]));
+				Integer.parseInt(dateString[0]),
+				Integer.parseInt(dateString[1]));
 
 		datePicker.init(cal.get(Calendar.YEAR), 
-			cal.get(Calendar.MONTH), 
-			cal.get(Calendar.DATE), null);
+						cal.get(Calendar.MONTH), 
+						cal.get(Calendar.DATE), null);
 	}
 
 	private String getLocationStringFromCursor(Cursor c) {
 		return String.valueOf(getHelper().getLatitude(c)) + ", " 
 			+ String.valueOf(getHelper().getLongitude(c));
 	}
-
 }

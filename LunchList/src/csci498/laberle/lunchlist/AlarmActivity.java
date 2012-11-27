@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-
 public class AlarmActivity extends Activity implements MediaPlayer.OnPreparedListener {
 
 	MediaPlayer player = new MediaPlayer();
@@ -28,8 +27,9 @@ public class AlarmActivity extends Activity implements MediaPlayer.OnPreparedLis
 				player.setDataSource(sound);
 				player.setOnPreparedListener(this);
 				player.prepareAsync();
-			} catch (Exception e) {
-				Log.e("LunchList", "Exception in playing rington", e);
+			} 
+			catch (Exception e) {
+				Log.e("LunchList", "Exception in playing ringtone", e);
 			}
 		}
 	}

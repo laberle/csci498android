@@ -36,15 +36,11 @@ public class OnAlarmReceiver extends BroadcastReceiver {
 	}
 
 	private void createNotification(Context context, SharedPreferences prefs) {
-		NotificationManager manager = (NotificationManager) 
-			context.getSystemService(Context.NOTIFICATION_SERVICE);
-		Notification note = new Notification(R.drawable.stat_notify_chat,
-			"It's time for lunch!", System.currentTimeMillis());
-		PendingIntent i = PendingIntent.getActivity(context, 0, 
-			new Intent(context, AlarmActivity.class), 0);
+		NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		Notification note = new Notification(R.drawable.stat_notify_chat, "It's time for lunch!", System.currentTimeMillis());
+		PendingIntent i = PendingIntent.getActivity(context, 0, new Intent(context, AlarmActivity.class), 0);
 
-		note.setLatestEventInfo(context, "LunchList", 
-			"It's time for lunch! Aren't you hungry?", i);
+		note.setLatestEventInfo(context, "LunchList", "It's time for lunch! Aren't you hungry?", i);
 		note.flags |= Notification.FLAG_AUTO_CANCEL;
 		
 		String sound = prefs.getString("alarm_ringtone", null);
@@ -52,8 +48,6 @@ public class OnAlarmReceiver extends BroadcastReceiver {
 			note.sound = Uri.parse(sound);
 			note.audioStreamType = AudioManager.STREAM_ALARM;
 		}
-			
 		manager.notify(NOTIFY_ME_ID, note);
 	}
-
 }

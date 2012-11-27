@@ -133,7 +133,6 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 		c.close();
 		
 		if (count > 0) {
-		
 			int offset = (int) (count * Math.random());
 			String args[] = {String.valueOf(offset)};
 	
@@ -141,17 +140,16 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 			c.moveToFirst();
 			c.close();
 			name = getName(c);
-			
 		}
 		else {
 			name = null;
 		}
-		
 		return name;
 	}
 	
 	public String getIdFromRestaurantName(String name) {
 		String args[] = {name};
+		
 		Cursor c = getReadableDatabase().rawQuery("SELECT _ID FROM restaurants WHERE name = ?", args );
 		c.moveToFirst();
 		String id = c.getString(0);
@@ -199,5 +197,4 @@ public class RestaurantHelper extends SQLiteOpenHelper {
 	public String getPhone(Cursor c) {
 		return c.getString(9);
 	}
-
 }

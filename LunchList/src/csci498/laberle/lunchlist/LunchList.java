@@ -16,7 +16,6 @@ public class LunchList extends FragmentActivity implements LunchFragment.OnResta
 		setContentView(R.layout.lunch_list);
 
 		LunchFragment lunch = (LunchFragment) getSupportFragmentManager().findFragmentById(R.id.lunch);
-
 		lunch.setOnRestaurantListener(this);
 	}
 

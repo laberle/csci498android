@@ -30,14 +30,12 @@ public class LunchFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setHasOptionsMenu(true);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-
 		configurePreferences();
 		configureList();
 	}
@@ -89,7 +87,6 @@ public class LunchFragment extends ListFragment {
 				initList();
 			}
 		}
-
 	};
 
 	private void configureList() {
@@ -107,9 +104,7 @@ public class LunchFragment extends ListFragment {
 	}
 
 	@Override
-	public void onListItemClick(ListView list, View view, 
-		int position, long id) {
-
+	public void onListItemClick(ListView list, View view, int position, long id) {
 		if (listener != null) {
 			listener.onRestaurantSelected(id);
 		}
@@ -144,7 +139,6 @@ public class LunchFragment extends ListFragment {
 			row.setTag(holder);
 			return row;
 		}
-
 	}
 
 	static class RestaurantHolder {
@@ -176,7 +170,5 @@ public class LunchFragment extends ListFragment {
 				icon.setImageResource(R.drawable.delivery);
 			}
 		}
-
 	}
-
 }

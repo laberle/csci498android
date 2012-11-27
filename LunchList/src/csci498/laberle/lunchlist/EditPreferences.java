@@ -28,7 +28,6 @@ public class EditPreferences extends PreferenceActivity {
 	@Override
 	public void onPause() {
 		prefs.unregisterOnSharedPreferenceChangeListener(onChange);
-
 		super.onPause();
 	}
 
@@ -36,7 +35,6 @@ public class EditPreferences extends PreferenceActivity {
 		new SharedPreferences.OnSharedPreferenceChangeListener() {
 
 		public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-
 			if ("alarm".equals(key)) {
 				boolean enabled = prefs.getBoolean(key, false);
 				int flag = (enabled ?
@@ -46,12 +44,8 @@ public class EditPreferences extends PreferenceActivity {
 				ComponentName component = new ComponentName(EditPreferences.this, OnBootReceiver.class);
 				getPackageManager().setComponentEnabledSetting(component, flag, PackageManager.DONT_KILL_APP);
 
-				if (enabled) {
-					OnBootReceiver.setAlarm(EditPreferences.this);
-				}
-				else {
-					OnBootReceiver.cancelAlarm(EditPreferences.this);
-				}
+				if (enabled) { OnBootReceiver.setAlarm(EditPreferences.this);   }
+				else 		 { OnBootReceiver.cancelAlarm(EditPreferences.this);}
 			}
 			else if ("alarm_time".equals(key)) {
 				OnBootReceiver.cancelAlarm(EditPreferences.this);

@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-
 public class FeedActivity extends ListActivity {
 	
 	private InstanceState state;
@@ -25,7 +24,6 @@ public class FeedActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		adjustState();
 	}
 
@@ -138,5 +136,4 @@ public class FeedActivity extends ListActivity {
 		RSSFeed feed;
 		FeedHandler handler;
 	}
-	
 }
